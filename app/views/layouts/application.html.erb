@@ -14,6 +14,9 @@
       <%= link_to "Logout", destroy_user_session_path, method: :delete %>
     <% end %>
 
+    <div>hello</div>
+
+    <div><%= current_user[:name] %></div>
   </head>
 
   <body>
