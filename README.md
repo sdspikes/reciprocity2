@@ -6,6 +6,18 @@ Note: Remember to restart your rails server (`rails s`) after installing and con
 
 Switch sqlite3 to pg: https://devcenter.heroku.com/articles/sqlite3
 
+### Environment Variables
+
+Make sure you have `gem 'dotenv'` in your gemfile and `bundle install`.
+
+Create a file in the base directory of the project called `.env`, with the following:
+```
+FB_APP_ID=<your_app_id>
+FB_APP_SECRET=<your_app_secret>
+TEST_FB_APP_ID=<your_test_app_id>
+TEST_FB_APP_SECRET=<your_test_app_secret>
+```
+
 ### Running locally
 
 set up ssl certificate: 
@@ -32,8 +44,8 @@ App Domains:
 ```
 heroku create
 git push heroku master
-git heroku config:set FB_APP_SECRET=<your_app_secret>
 heroku config:set FB_APP_ID=<your_app_id>
+heroku config:set FB_APP_SECRET=<your_app_secret>
 ```
 
 ### Set up FB app
