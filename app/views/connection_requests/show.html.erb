@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Requester:</strong>
+  <%= @connection_request.requester %>
+</p>
+
+<p>
+  <strong>Requestee:</strong>
+  <%= @connection_request.requestee %>
+</p>
+
+<%= link_to 'Edit', edit_connection_request_path(@connection_request) %> |
+<%= link_to 'Back', connection_requests_path %>

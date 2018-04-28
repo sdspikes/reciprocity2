@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_18_081234) do
+ActiveRecord::Schema.define(version: 2018_04_28_023628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,24 @@ ActiveRecord::Schema.define(version: 2018_04_18_081234) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "connection_requests", force: :cascade do |t|
+    t.bigint "requester_id"
+    t.bigint "requestee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["requestee_id"], name: "index_connection_requests_on_requestee_id"
+    t.index ["requester_id"], name: "index_connection_requests_on_requester_id"
+  end
+
+  create_table "connections", force: :cascade do |t|
+    t.bigint "requester_id"
+    t.bigint "requestee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["requestee_id"], name: "index_connections_on_requestee_id"
+    t.index ["requester_id"], name: "index_connections_on_requester_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -43,4 +61,8 @@ ActiveRecord::Schema.define(version: 2018_04_18_081234) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "connection_requests", "users", column: "requestee_id"
+  add_foreign_key "connection_requests", "users", column: "requester_id"
+  add_foreign_key "connections", "users", column: "requestee_id"
+  add_foreign_key "connections", "users", column: "requester_id"
 end
