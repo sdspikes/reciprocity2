@@ -10,16 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_28_023628) do
+ActiveRecord::Schema.define(version: 2018_06_12_192109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "checks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "activity_id"
+    t.bigint "checker_id"
+    t.bigint "checked_id"
+    t.index ["activity_id"], name: "index_checks_on_activity_id"
+    t.index ["checked_id"], name: "index_checks_on_checked_id"
+    t.index ["checker_id"], name: "index_checks_on_checker_id"
   end
 
   create_table "connection_requests", force: :cascade do |t|
@@ -61,6 +79,9 @@ ActiveRecord::Schema.define(version: 2018_04_28_023628) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "checks", "activities"
+  add_foreign_key "checks", "users", column: "checked_id"
+  add_foreign_key "checks", "users", column: "checker_id"
   add_foreign_key "connection_requests", "users", column: "requestee_id"
   add_foreign_key "connection_requests", "users", column: "requester_id"
   add_foreign_key "connections", "users", column: "requestee_id"

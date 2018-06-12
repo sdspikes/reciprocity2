@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :activities
   resources :connection_requests
   resources :connections
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
