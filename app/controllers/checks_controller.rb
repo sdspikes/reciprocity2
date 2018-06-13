@@ -9,7 +9,7 @@ class ChecksController < ApplicationController
     @users = User.all
     @activities = Activity.all
     @current_user = current_user
-    @users_to_activities = @current_user.get_checks_table
+    @users_to_activities = (@current_user && @current_user.get_checks_table) || {}
   end
 
   # GET /checks/1
