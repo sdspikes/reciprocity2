@@ -13,13 +13,16 @@ class User < ApplicationRecord
 
   def get_checks_table
     users_to_activities = Hash[ User.all.collect do |u|
-      [u.id, Hash[ Activity.all.collect { |activity| [activity.id, :unchecked] }]]
+      [u.id, Hash[ Activity.all.collect { |activity| [activity.id, {status: :unchecked}] }]]
     end]
 
-    outgoing.each { |check| users_to_activities[check.checked_id][check.activity_id] = :checked }
+    outgoing.each { |check| users_to_activities[check.checked_id][check.activity_id] = {
+      status: :checked,
+      check_id: check.id
+    } }
     incoming.each do |check|
-      if users_to_activities[check.checker_id][check.activity_id] == :checked then
-        users_to_activities[check.checker_id][check.activity_id] = :reciprocated
+      if users_to_activities[check.checker_id][check.activity_id][:status] == :checked then
+        users_to_activities[check.checker_id][check.activity_id][:status] = :reciprocated
       end
     end
     users_to_activities

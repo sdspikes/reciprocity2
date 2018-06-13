@@ -29,11 +29,16 @@ class ChecksController < ApplicationController
   # POST /checks
   # POST /checks.json
   def create
-    @check = Check.new(check_params)
+    new_check_params = {
+      activity_id: check_params["activity_id"].to_i,
+      checker_id: current_user.id,
+      checked_id: check_params["user_id"].to_i
+    }
 
+    @check = Check.new(new_check_params)
     respond_to do |format|
       if @check.save
-        format.html { redirect_to @check, notice: 'Check was successfully created.' }
+        format.html { redirect_to checks_path, notice: 'Check was successfully created.' }
         format.json { render :show, status: :created, location: @check }
       else
         format.html { render :new }
@@ -74,6 +79,6 @@ class ChecksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def check_params
-      params.fetch(:check, {})
+      params.permit(:activity_id, :user_id)
     end
 end

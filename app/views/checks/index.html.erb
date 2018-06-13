@@ -18,8 +18,12 @@
         <tr>
           <td><%= user.email %></td>
           <% @activities.each do |activity| %>
-            <td><%= @users_to_activities[user.id][activity.id] %></td>
-          <% end %>
+            <% if @users_to_activities[user.id][activity.id][:status] == :unchecked %>
+              <td><%= link_to @users_to_activities[user.id][activity.id][:status], activity_user_checks_path(activity.id, user.id), method: :post %></td>
+             <% else %>
+              <td><%= link_to @users_to_activities[user.id][activity.id][:status], check_path(@users_to_activities[user.id][activity.id][:check_id]), method: :delete %></td>
+             <% end %>
+           <% end %>
         </tr>
       <% end %>
     <% end %>
@@ -28,5 +32,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New Check', new_check_path %>
