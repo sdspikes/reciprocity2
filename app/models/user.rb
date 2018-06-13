@@ -6,6 +6,26 @@ class User < ApplicationRecord
 
   devise :omniauthable, :omniauth_providers => [:facebook]
 
+  has_many :outgoing, foreign_key: "checker_id", class_name: 'Check'
+  has_many :incoming, foreign_key: "checked_id", class_name: 'Check'
+  has_many :outgoing_checked, class_name: "User", through: :outgoing
+  has_many :incoming_checked, class_name: "User", through: :incoming
+
+  def get_checks_table
+    users_to_activities = Hash[ User.all.collect do |u|
+      [u.id, Hash[ Activity.all.collect { |activity| [activity.id, :unchecked] }]]
+    end]
+
+    outgoing.each { |check| users_to_activities[check.checked_id][check.activity_id] = :checked }
+    incoming.each do |check|
+      if users_to_activities[check.checker_id][check.activity_id] == :checked then
+        users_to_activities[check.checker_id][check.activity_id] = :reciprocated
+      end
+    end
+    users_to_activities
+  end
+
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

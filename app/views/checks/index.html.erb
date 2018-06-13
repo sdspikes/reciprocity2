@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Checks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <td>Email</td>
+      <% @activities.each do |activity| %>
+        <td><%= activity.title %></td>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <% if user.id != @current_user.id %>
+        <tr>
+          <td><%= user.email %></td>
+          <% @activities.each do |activity| %>
+            <td><%= @users_to_activities[user.id][activity.id] %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Check', new_check_path %>
