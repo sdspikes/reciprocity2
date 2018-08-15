@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :seekings
+  resources :compatibilities
+  resources :match_people
   resources :activities do
     resources :users do
       resources :checks, only: [:create]
