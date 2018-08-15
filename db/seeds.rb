@@ -79,7 +79,8 @@ match_people.each do |match_person|
 		if (match_person != matched_person) 
 			# p match_person.name, matched_person.name
 			if Seeking.where(match_person: match_person, gender: matched_person.gender).size > 0 &&
-				Seeking.where(match_person: matched_person, gender: match_person.gender).size > 0
+				Seeking.where(match_person: matched_person, gender: match_person.gender).size > 0 &&
+				Compatibility.where(match_person_1: matched_person, match_person_2: match_person).size == 0
 				# p "adding!"
 				Compatibility.create(match_person_1: match_person, match_person_2: matched_person)
 			end
