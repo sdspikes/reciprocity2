@@ -1,0 +1,2 @@
+json.extract! match_person, :id, :name, :email, :okc, :fb, :li, :age, :range_min, :range_max, :occupation, :location, :gender_id, :openness, :asexual, :aromantic, :current_partners, :situation, :kids, :ask_first, :keep_dating, :only_strong_match, :num_matches, :important, :disappointments, :date_activities, :murphyjitsu, :incompatible, :continue_matching, :anything_else, :notes, :created_at, :updated_at
+json.url match_person_url(match_person, format: :json)

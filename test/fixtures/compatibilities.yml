@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dealbreaker: 
+  rating: 1
+  notes: MyText
+  match_person_1: one
+  match_person_2: one
+
+two:
+  dealbreaker: 
+  rating: 1
+  notes: MyText
+  match_person_1: two
+  match_person_2: two

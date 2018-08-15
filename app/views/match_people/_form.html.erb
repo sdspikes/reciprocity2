@@ -1,0 +1,152 @@
+<%= form_with(model: match_person, local: true) do |form| %>
+  <% if match_person.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(match_person.errors.count, "error") %> prohibited this match_person from being saved:</h2>
+
+      <ul>
+      <% match_person.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :okc %>
+    <%= form.text_field :okc %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fb %>
+    <%= form.text_field :fb %>
+  </div>
+
+  <div class="field">
+    <%= form.label :li %>
+    <%= form.text_field :li %>
+  </div>
+
+  <div class="field">
+    <%= form.label :age %>
+    <%= form.number_field :age %>
+  </div>
+
+  <div class="field">
+    <%= form.label :acceptable_range %>
+    <%= form.text_field :acceptable_range %>
+  </div>
+
+  <div class="field">
+    <%= form.label :occupation %>
+    <%= form.text_field :occupation %>
+  </div>
+
+  <div class="field">
+    <%= form.label :location %>
+    <%= form.text_field :location %>
+  </div>
+
+  <div class="field">
+    <%= form.label :gender_id %>
+    <%= form.text_field :gender_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :openness %>
+    <%= form.number_field :openness %>
+  </div>
+
+  <div class="field">
+    <%= form.label :identities %>
+    <%= form.text_field :identities %>
+  </div>
+
+  <div class="field">
+    <%= form.label :current_partners %>
+    <%= form.text_area :current_partners %>
+  </div>
+
+  <div class="field">
+    <%= form.label :situation %>
+    <%= form.text_area :situation %>
+  </div>
+
+  <div class="field">
+    <%= form.label :kids %>
+    <%= form.text_area :kids %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ask_first %>
+    <%= form.text_field :ask_first %>
+  </div>
+
+  <div class="field">
+    <%= form.label :keep_dating %>
+    <%= form.text_field :keep_dating %>
+  </div>
+
+  <div class="field">
+    <%= form.label :only_strong_match %>
+    <%= form.text_field :only_strong_match %>
+  </div>
+
+  <div class="field">
+    <%= form.label :num_matches %>
+    <%= form.text_field :num_matches %>
+  </div>
+
+  <div class="field">
+    <%= form.label :important %>
+    <%= form.text_area :important %>
+  </div>
+
+  <div class="field">
+    <%= form.label :disappointments %>
+    <%= form.text_area :disappointments %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date_activities %>
+    <%= form.text_area :date_activities %>
+  </div>
+
+  <div class="field">
+    <%= form.label :murphyjitsu %>
+    <%= form.text_area :murphyjitsu %>
+  </div>
+
+  <div class="field">
+    <%= form.label :incompatible %>
+    <%= form.text_area :incompatible %>
+  </div>
+
+  <div class="field">
+    <%= form.label :continue_matching %>
+    <%= form.text_field :continue_matching %>
+  </div>
+
+  <div class="field">
+    <%= form.label :anything_else %>
+    <%= form.text_area :anything_else %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notes %>
+    <%= form.text_area :notes %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,79 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Match People</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Okc</th>
+      <th>Fb</th>
+      <th>Li</th>
+      <th>Age</th>
+      <th>Age ranges</th>
+      <th>Occupation</th>
+      <th>Location</th>
+      <th>Gender</th>
+      <th>Openness</th>
+      <th>Identities</th>
+      <th>Current partners</th>
+      <th>Situation</th>
+      <th>Kids</th>
+      <th>Ask first</th>
+      <th>Keep dating</th>
+      <th>Only strong match</th>
+      <th>Num matches</th>
+      <th>Important</th>
+      <th>Disappointments</th>
+      <th>Date activities</th>
+      <th>Murphyjitsu</th>
+      <th>Incompatible</th>
+      <th>Continue matching</th>
+      <th>Anything else</th>
+      <th>Notes</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @match_people.each do |match_person| %>
+      <tr>
+        <td><%= match_person.name %></td>
+        <td><%= match_person.email %></td>
+        <td><%= match_person.okc %></td>
+        <td><%= match_person.fb %></td>
+        <td><%= match_person.li %></td>
+        <td><%= match_person.age %></td>
+        <td><%= match_person.acceptable_range %></td>
+        <td><%= match_person.occupation %></td>
+        <td><%= match_person.location %></td>
+        <td><%= match_person.gender.name %></td>
+        <td><%= match_person.openness %></td>
+        <td><%= match_person.identities %></td>
+        <td><%= match_person.current_partners %></td>
+        <td><%= match_person.situation %></td>
+        <td><%= match_person.kids %></td>
+        <td><%= match_person.ask_first %></td>
+        <td><%= match_person.keep_dating %></td>
+        <td><%= match_person.only_strong_match %></td>
+        <td><%= match_person.num_matches %></td>
+        <td><%= match_person.important %></td>
+        <td><%= match_person.disappointments %></td>
+        <td><%= match_person.date_activities %></td>
+        <td><%= match_person.murphyjitsu %></td>
+        <td><%= match_person.incompatible %></td>
+        <td><%= match_person.continue_matching %></td>
+        <td><%= match_person.anything_else %></td>
+        <td><%= match_person.notes %></td>
+        <td><%= link_to 'Show', match_person %></td>
+        <td><%= link_to 'Edit', edit_match_person_path(match_person) %></td>
+        <td><%= link_to 'Destroy', match_person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Match Person', new_match_person_path %>

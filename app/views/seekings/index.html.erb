@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Seekings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Gender</th>
+      <th>Match person</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @seekings.each do |seeking| %>
+      <tr>
+        <td><%= seeking.gender %></td>
+        <td><%= seeking.match_person %></td>
+        <td><%= link_to 'Show', seeking %></td>
+        <td><%= link_to 'Edit', edit_seeking_path(seeking) %></td>
+        <td><%= link_to 'Destroy', seeking, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Seeking', new_seeking_path %>

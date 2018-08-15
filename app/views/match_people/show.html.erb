@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+
+<div class="row">
+  <div class="col-lg-6">
+    <%= render :partial => 'show_individual', locals: {match_person: @match_person} %>
+  </div>
+  <div class="col-lg-6">
+    <h1>potential matches</h1>
+      <div class="row">
+        <div class="col-lg-4">
+          <b>Name</b>
+        </div>
+        <div class="col-lg-4">
+          <b>Known dealbreaker?</b>
+        </div>
+        <div class="col-lg-4">
+          <b>Have intro'd</b>
+        </div>
+      </div>
+    <% @match_person.outgoing_compatibilities.each do |compatibility| %>
+      <% other_person = compatibility.get_other_person_by_id(@match_person.id) %>
+      <div class="row">
+        <div class="col-lg-6">
+          <%= link_to other_person.name, compatibility_path(compatibility.id) %>
+        </div>
+        <div class="col-lg-6">
+          <%= compatibility.dealbreaker %>
+        </div>
+        <div class="col-lg-6">
+          <%= compatibility.introduction_made %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%= link_to 'Edit', edit_match_person_path(@match_person) %> |
+<%= link_to 'Back', match_people_path %>

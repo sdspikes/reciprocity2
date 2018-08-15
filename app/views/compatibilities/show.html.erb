@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Dealbreaker:</strong>
+  <%= @compatibility.dealbreaker %>
+</p>
+
+<p>
+  <strong>Rating:</strong>
+  <%= @compatibility.rating %>
+</p>
+
+<p>
+  <strong>Notes:</strong>
+  <%= @compatibility.notes %>
+</p>
+
+<%= link_to 'Edit', edit_compatibility_path(@compatibility) %> |
+<%= link_to 'Back', compatibilities_path %>
+
+<div class="row">
+  <div class="col-lg-6">
+    <%= render :partial => 'match_people/show_individual', locals: {match_person: @compatibility.match_person_1} %>
+  </div>
+  <div class="col-lg-6">
+    <%= render :partial => 'match_people/show_individual', locals: {match_person: @compatibility.match_person_2} %>
+  </div>
+</div>
+
+
