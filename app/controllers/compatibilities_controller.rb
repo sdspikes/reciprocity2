@@ -5,7 +5,7 @@ class CompatibilitiesController < ApplicationController
   # GET /compatibilities.json
   def index
     @compatibilities = Compatibility.all
-    @compatibilities = @compatibilities.sort_by { |c| c.dealbreaker ? 1 : 0 }
+    @compatibilities = @compatibilities.sort_by { |c| c.dealbreaker ? 100 : c.rating.to_i }
   end
 
   # GET /compatibilities/1

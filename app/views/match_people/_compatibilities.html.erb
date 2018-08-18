@@ -1,0 +1,16 @@
+<% compatibilities.each do |compatibility| %>
+  <% if !compatibility.dealbreaker %>
+    <% other_person = compatibility.get_other_person_by_id(@match_person.id) %>
+    <div class="row">
+      <div class="col-lg-6">
+        <%= link_to other_person.name, compatibility_path(compatibility.id) %>
+      </div>
+      <div class="col-lg-6">
+      	<%= check_box_tag('compatibility', 'dealbreaker', compatibility.dealbreaker, disabled: true) %>
+      </div>
+      <div class="col-lg-6">
+        <%= compatibility.introduction_made %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
