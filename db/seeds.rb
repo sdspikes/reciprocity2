@@ -60,7 +60,7 @@
 # 	db_gender
 # end
 
-# preset_genders = ['Cis-identifying male', 'Cis-identifying female', 'Trans-identifying male', 'Trans-identifying female', 'Non-binary']
+preset_genders = ['Cis-identifying male', 'Cis-identifying female', 'Trans-identifying male', 'Trans-identifying female', 'Non-binary']
 
 # match_people = csv.each do |row|
 # 	row_hash = row.to_h
