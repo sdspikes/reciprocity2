@@ -11,7 +11,7 @@ class MatchPeopleController < ApplicationController
   # GET /match_people/1.json
   def show
     @compatibilities = @match_person.outgoing_compatibilities + @match_person.incoming_compatibilities
-    @compatibilities = @compatibilities.sort_by{|c| c.rating ? c.rating : 0}
+    @compatibilities = @compatibilities.sort_by{|c| c.rating ? c.rating : -1 * c.get_other_person(@match_person).gender_id}
   end
 
   # GET /match_people/new
