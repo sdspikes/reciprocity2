@@ -7,17 +7,6 @@
   </div>
   <div class="col-lg-6">
     <h1>potential matches</h1>
-      <div class="row">
-        <div class="col-lg-3">
-          <b>Name</b>
-        </div>
-        <div class="col-lg-2">
-          <b>intro'd?</b>
-        </div>
-        <div class="col-lg-7">
-          <b>notes</b>
-        </div>
-      </div>
     <%= render partial: 'compatibilities', locals: {compatibilities: @match_person.outgoing_compatibilities} %>
     <%= render partial: 'compatibilities', locals: {compatibilities: @match_person.incoming_compatibilities} %>
   </div>

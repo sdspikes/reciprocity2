@@ -43,8 +43,13 @@ class CompatibilitiesController < ApplicationController
   def update
     respond_to do |format|
       if @compatibility.update(compatibility_params)
-        format.html { redirect_to @compatibility, notice: 'Compatibility was successfully updated.' }
-        format.json { render :show, status: :ok, location: @compatibility }
+        if request.referrer.include?('match_people')
+          format.html { redirect_to request.referrer, notice: 'Compatibility was successfully updated.' }
+          format.json { render :show, status: :ok, location: @compatibility }
+        else
+          format.html { redirect_to @compatibility, notice: 'Compatibility was successfully updated.' }
+          format.json { render :show, status: :ok, location: @compatibility }
+        end
       else
         format.html { render :edit }
         format.json { render json: @compatibility.errors, status: :unprocessable_entity }
@@ -70,7 +75,7 @@ class CompatibilitiesController < ApplicationController
 
       id = params[:id].to_i + 1
       @next = nil
-      while !@next && id < last_id do
+      while (!@next && id < last_id) || (@next && @next.dealbreaker) do
         id += 1
         @next = Compatibility.find(id)
       end
