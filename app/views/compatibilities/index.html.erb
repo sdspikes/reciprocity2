@@ -17,7 +17,7 @@
   <tbody>
     <% @compatibilities.each do |compatibility| %>
       <tr>
-        <td><%= compatibility.dealbreaker %></td>
+        <td><%= check_box_tag('compatibility', 'dealbreaker', compatibility.dealbreaker, disabled: true) %></td>
         <td><%= compatibility.rating %></td>
         <td><%= compatibility.notes %></td>
         <td><%= link_to compatibility.match_person_1.name, match_person_path(compatibility.match_person_1.id) %></td>

@@ -1,22 +1,14 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Dealbreaker:</strong>
-  <%= @compatibility.dealbreaker %>
-</p>
+<%= render 'form', compatibility: @compatibility %>
 
-<p>
-  <strong>Rating:</strong>
-  <%= @compatibility.rating %>
-</p>
 
-<p>
-  <strong>Notes:</strong>
-  <%= @compatibility.notes %>
-</p>
+<% if @next && @next.id %>
+  <%= link_to 'Next', compatibility_path(@next.id) %>
+<% end %>
+|
+<%= link_to 'Compatibilities list', compatibilities_path %>
 
-<%= link_to 'Edit', edit_compatibility_path(@compatibility) %> |
-<%= link_to 'Back', compatibilities_path %>
 
 <div class="row">
   <div class="col-lg-6">

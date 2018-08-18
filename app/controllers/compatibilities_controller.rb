@@ -5,6 +5,7 @@ class CompatibilitiesController < ApplicationController
   # GET /compatibilities.json
   def index
     @compatibilities = Compatibility.all
+    @compatibilities = @compatibilities.sort_by { |c| c.dealbreaker ? 1 : 0 }
   end
 
   # GET /compatibilities/1
@@ -65,6 +66,14 @@ class CompatibilitiesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_compatibility
       @compatibility = Compatibility.find(params[:id])
+      last_id = Compatibility.last.id
+
+      id = params[:id].to_i + 1
+      @next = nil
+      while !@next && id < last_id do
+        id += 1
+        @next = Compatibility.find(id)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

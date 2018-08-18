@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_15_215239) do
+ActiveRecord::Schema.define(version: 2018_08_18_013227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2018_08_15_215239) do
   end
 
   create_table "compatibilities", force: :cascade do |t|
-    t.string "dealbreaker"
+    t.boolean "dealbreaker", default: false
     t.integer "rating"
     t.text "notes"
     t.string "introduction_made"
