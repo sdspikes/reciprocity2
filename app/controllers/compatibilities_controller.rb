@@ -78,6 +78,6 @@ class CompatibilitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def compatibility_params
-      params.require(:compatibility).permit(:dealbreaker, :rating, :notes, :match_person_1_id, :match_person_2_id)
+      params.require(:compatibility).permit(:dealbreaker, :rating, :notes, :match_person_1_id, :match_person_2_id, :introduction_made)
     end
 end

@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Dealbreaker</th>
+      <th>Introduction</th>
       <th>Rating</th>
       <th>Notes</th>
       <th>Match person 1</th>
@@ -18,6 +19,7 @@
     <% @compatibilities.each do |compatibility| %>
       <tr>
         <td><%= check_box_tag('compatibility', 'dealbreaker', compatibility.dealbreaker, disabled: true) %></td>
+        <td><%= check_box_tag('compatibility', 'introduction_made', compatibility.introduction_made, disabled: true) %></td>
         <td><%= compatibility.rating %></td>
         <td><%= compatibility.notes %></td>
         <td><%= link_to compatibility.match_person_1.name, match_person_path(compatibility.match_person_1.id) %></td>
