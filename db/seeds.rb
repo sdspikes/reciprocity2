@@ -12,7 +12,7 @@
 # Gender.destroy_all
 
 Compatibility.all.each do |c|
-	c.dealbreaker = !!c.dealbreaker
+	c.dealbreaker = false
 	c.save
 end
 
