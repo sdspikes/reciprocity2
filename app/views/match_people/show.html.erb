@@ -7,8 +7,7 @@
   </div>
   <div class="col-lg-6">
     <h1>potential matches</h1>
-    <%= render partial: 'compatibilities', locals: {compatibilities: @match_person.outgoing_compatibilities} %>
-    <%= render partial: 'compatibilities', locals: {compatibilities: @match_person.incoming_compatibilities} %>
+    <%= render partial: 'compatibilities', locals: {compatibilities: @compatibilities} %>
   </div>
 </div>
 

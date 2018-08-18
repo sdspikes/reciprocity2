@@ -10,8 +10,8 @@ class MatchPeopleController < ApplicationController
   # GET /match_people/1
   # GET /match_people/1.json
   def show
-    @match_person.outgoing_compatibilities.each {|c| p c.match_person_1.name, c.match_person_2.name}
-
+    @compatibilities = @match_person.outgoing_compatibilities + @match_person.incoming_compatibilities
+    @compatibilities = @compatibilities.sort_by{|c| c.rating ? c.rating : 0}
   end
 
   # GET /match_people/new
