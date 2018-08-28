@@ -58,38 +58,62 @@ field_to_header = {
 def find_or_add_gender(gender)
 	db_gender = Gender.where(name: gender).first
 	if (!db_gender) 
-		p gender
 		db_gender = Gender.create(name: gender)
-		p db_gender
 	end
 	db_gender
 end
 
-preset_genders = ['Cis-identifying male', 'Cis-identifying female', 'Trans-identifying male', 'Trans-identifying female', 'Non-binary']
+def add_people()
+	match_people = csv.each do |row|
+		row_hash = row.to_h
+		person_hash = {}
+		field_to_header.each {|field, header| person_hash[field] = row_hash[header] }
 
-match_people = csv.each do |row|
-	row_hash = row.to_h
-	person_hash = {}
-	field_to_header.each {|field, header| person_hash[field] = row_hash[header] }
-
-	person_hash[:gender] = find_or_add_gender(row_hash["I am..."])
-	match_person = MatchPerson.create(person_hash)
-	row_hash["Looking for partners who are..."].split(', ').each do |gender|
-		Seeking.create(match_person: match_person, gender: find_or_add_gender(gender))
-	end
-	MatchPerson.all.each do |matched_person|
-		if (match_person != matched_person) 
-			if !preset_genders.include?(match_person.gender) || !preset_genders.include?(matched_person) ||
-				(Seeking.where(match_person: match_person, gender: matched_person.gender).size > 0 &&
-				Seeking.where(match_person: matched_person, gender: match_person.gender).size > 0 &&
-				Compatibility.where(match_person_1: matched_person, match_person_2: match_person).size == 0)
-				# p "adding!"
-				Compatibility.create(match_person_1: match_person, match_person_2: matched_person)
+		person_hash[:gender] = find_or_add_gender(row_hash["I am..."])
+		match_person = MatchPerson.create(person_hash)
+		row_hash["Looking for partners who are..."].split(', ').each do |gender|
+			Seeking.create(match_person: match_person, gender: find_or_add_gender(gender))
+		end
+		MatchPerson.all.each do |matched_person|
+			if (match_person != matched_person)
+				if Compatibility.where(match_person_1: matched_person, match_person_2: match_person).size == 0
+					c = Compatibility.new(match_person_1: match_person, match_person_2: matched_person)
+					if is_incompatible(c.match_person_1, c.match_person_2)
+						c.dealbreaker = true
+						c.notes = "genders/orientations incompatible"
+					end
+					c.save
+				end
 			end
 		end
 	end
 end
 
+def is_incompatible(person_a, person_b)
+	preset_genders = ['Cis-identifying male', 'Cis-identifying female', 'Trans-identifying male', 'Trans-identifying female', 'Non-binary']
+	if !preset_genders.include?(person_a.gender.name) || !preset_genders.include?(person_b.gender.name)
+		return false
+	end
+	if (Seeking.where(match_person: person_a, gender: person_b.gender).size == 0 ||
+		Seeking.where(match_person: person_b, gender: person_a.gender).size == 0)
+		return true
+	end
+	return false
+end
+
+def mark_incompatibilities()
+	Compatibility.all.each do |c|
+		if !c.dealbreaker && is_incompatible(c.match_person_1, c.match_person_2)
+			puts "new incompatibility:", c.match_person_1.name, c.match_person_2.name
+			c.dealbreaker = true
+			c.notes = c.notes ? c.notes : ""
+			c.notes += "genders/orientations incompatible"
+			c.save
+		end
+	end
+end
+
+mark_incompatibilities
 
 # MatchPerson.all.each do |person_a|
 # 	MatchPerson.all.each do |person_b|
