@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   resources :seekings
+  get 'compatibilities/unrated', :to => 'compatibilities#unrated_index'
+  get 'compatibilities/rated', :to => 'compatibilities#rated_index'
+  get 'compatibilities/dealbreakers', :to => 'compatibilities#dealbreakers_index'
   resources :compatibilities
   resources :match_people
   resources :activities do

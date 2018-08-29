@@ -8,6 +8,23 @@ class CompatibilitiesController < ApplicationController
     @compatibilities = @compatibilities.sort_by { |c| c.dealbreaker ? 100 : c.rating.to_i }
   end
 
+  def dealbreakers_index
+    @compatibilities = Compatibility.where dealbreaker: true
+    render 'index'
+  end
+
+  def unrated_index
+    @compatibilities = Compatibility.where dealbreaker: false, rating: nil
+    render 'index'
+  end
+
+  def rated_index
+    @compatibilities = Compatibility.where dealbreaker: false
+    @compatibilities -= Compatibility.where(dealbreaker: false, rating: nil)
+    @compatibilities.sort_by { |c| c.rating.to_i }
+    render 'index'
+  end
+
   # GET /compatibilities/1
   # GET /compatibilities/1.json
   def show
