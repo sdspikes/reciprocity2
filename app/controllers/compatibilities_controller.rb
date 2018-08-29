@@ -21,7 +21,7 @@ class CompatibilitiesController < ApplicationController
   def rated_index
     @compatibilities = Compatibility.where dealbreaker: false
     @compatibilities -= Compatibility.where(dealbreaker: false, rating: nil)
-    @compatibilities = @compatibilities.sort_by { |c| -c.rating.to_i }
+    @compatibilities = @compatibilities.sort_by { |c| - c.rating.to_i }
     render 'index'
   end
 
