@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_18_181100) do
+ActiveRecord::Schema.define(version: 2018_08_29_072237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,8 @@ ActiveRecord::Schema.define(version: 2018_08_18_181100) do
     t.string "seeking_genders"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "max_age", default: 100
+    t.integer "min_age", default: 18
     t.index ["gender_id"], name: "index_match_people_on_gender_id"
   end
 

@@ -6,10 +6,12 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# Compatibility.destroy_all
-# Seeking.destroy_all
-# MatchPerson.destroy_all
-# Gender.destroy_all
+def destroy_all
+	Compatibility.destroy_all
+	Seeking.destroy_all
+	MatchPerson.destroy_all
+	Gender.destroy_all
+end
 
 # Compatibility.all.each do |c|
 # 	c.dealbreaker = false
@@ -18,8 +20,6 @@
 
 require 'csv'
 
-csv_text = File.read(Rails.root.join('db', 'seeds', 'match_people.csv'))
-csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
 
 
 
@@ -63,7 +63,7 @@ def find_or_add_gender(gender)
 	db_gender
 end
 
-def add_people()
+def add_people(csv, field_to_header)
 	match_people = csv.each do |row|
 		row_hash = row.to_h
 		person_hash = {}
@@ -78,24 +78,38 @@ def add_people()
 			if (match_person != matched_person)
 				if Compatibility.where(match_person_1: matched_person, match_person_2: match_person).size == 0
 					c = Compatibility.new(match_person_1: match_person, match_person_2: matched_person)
-					if is_incompatible(c.match_person_1, c.match_person_2)
-						c.dealbreaker = true
-						c.notes = "genders/orientations incompatible"
-					end
-					c.save
+					set_gender_incompatible(c) || set_age_incompatible(c)
 				end
 			end
 		end
 	end
 end
 
-def is_incompatible(person_a, person_b)
+def set_gender_incompatible(c)
+	person_a, person_b = c.match_person_1, c.match_person_2
 	preset_genders = ['Cis-identifying male', 'Cis-identifying female', 'Trans-identifying male', 'Trans-identifying female', 'Non-binary']
 	if !preset_genders.include?(person_a.gender.name) || !preset_genders.include?(person_b.gender.name)
 		return false
 	end
 	if (Seeking.where(match_person: person_a, gender: person_b.gender).size == 0 ||
 		Seeking.where(match_person: person_b, gender: person_a.gender).size == 0)
+		c.dealbreaker = true
+		c.notes = c.notes ? c.notes : ""
+		c.notes += "genders/orientations incompatible"
+		c.save
+		return true
+	end
+	return false
+end
+
+def set_age_incompatible(c)
+	person_a, person_b = c.match_person_1, c.match_person_2
+	if person_a.age < person_b.min_age || person_a.age > person_b.max_age ||
+		person_b.age < person_a.min_age || person_b.age > person_a.max_age
+		c.dealbreaker = true
+		c.notes = c.notes ? c.notes : ""
+		c.notes += "ages incompatible"
+		c.save
 		return true
 	end
 	return false
@@ -103,13 +117,7 @@ end
 
 def mark_incompatibilities()
 	Compatibility.all.each do |c|
-		if !c.dealbreaker && is_incompatible(c.match_person_1, c.match_person_2)
-			puts "new incompatibility:", c.match_person_1.name, c.match_person_2.name
-			c.dealbreaker = true
-			c.notes = c.notes ? c.notes : ""
-			c.notes += "genders/orientations incompatible"
-			c.save
-		end
+		!c.dealbreaker && set_gender_incompatible(c) && set_age_incompatible(c)
 	end
 end
 
@@ -128,3 +136,7 @@ mark_incompatibilities
 # 	end
 # end
 
+# destroy_all
+# csv_text = File.read(Rails.root.join('db', 'seeds', 'match_people.csv'))
+# csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+# add_people(csv, field_to_header)
