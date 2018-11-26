@@ -79,6 +79,7 @@ def add_people(csv, field_to_header)
 				if Compatibility.where(match_person_1: matched_person, match_person_2: match_person).size == 0
 					c = Compatibility.new(match_person_1: match_person, match_person_2: matched_person)
 					set_gender_incompatible(c) || set_age_incompatible(c)
+					c.save
 				end
 			end
 		end
@@ -96,7 +97,6 @@ def set_gender_incompatible(c)
 		c.dealbreaker = true
 		c.notes = c.notes ? c.notes : ""
 		c.notes += "genders/orientations incompatible"
-		c.save
 		return true
 	end
 	return false
@@ -136,7 +136,7 @@ mark_incompatibilities
 # 	end
 # end
 
-# destroy_all
-# csv_text = File.read(Rails.root.join('db', 'seeds', 'match_people.csv'))
-# csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
-# add_people(csv, field_to_header)
+destroy_all
+csv_text = File.read(Rails.root.join('db', 'seeds', 'match_people_1.csv'))
+csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+add_people(csv, field_to_header)

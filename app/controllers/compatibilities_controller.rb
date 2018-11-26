@@ -88,14 +88,6 @@ class CompatibilitiesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_compatibility
       @compatibility = Compatibility.find(params[:id])
-      last_id = Compatibility.last.id
-
-      id = params[:id].to_i + 1
-      @next = nil
-      while (!@next && id < last_id) || (@next && @next.dealbreaker) do
-        id += 1
-        @next = Compatibility.find(id)
-      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

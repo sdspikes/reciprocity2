@@ -13,8 +13,8 @@ class MatchPerson < ApplicationRecord
   def set_age_range
     expr = /(\d+)\D*(\d*)/
     ages = acceptable_range.scan(expr)
-    if !ages[0] then return end
     ages = ages[0]
+    if !ages || ages.size != 2 then return end
     if ages[0] && ages[0].to_i
       self.min_age = ages[0].to_i
     end
