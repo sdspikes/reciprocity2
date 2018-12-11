@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @privacy_group.name %>
+</p>
+
+<p>
+  <strong>Owner:</strong>
+  <%= @privacy_group.owner %>
+</p>
+
+<%= link_to 'Edit', edit_privacy_group_path(@privacy_group) %> |
+<%= link_to 'Back', privacy_groups_path %>

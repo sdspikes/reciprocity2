@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Privacy Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Owner</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @privacy_groups.each do |privacy_group| %>
+      <tr>
+        <td><%= privacy_group.name %></td>
+        <td><%= privacy_group.owner %></td>
+        <td><%= link_to 'Show', privacy_group %></td>
+        <td><%= link_to 'Edit', edit_privacy_group_path(privacy_group) %></td>
+        <td><%= link_to 'Destroy', privacy_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Privacy Group', new_privacy_group_path %>

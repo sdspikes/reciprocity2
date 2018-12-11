@@ -1,0 +1,27 @@
+<%= form_with(model: privacy_group_member, local: true) do |form| %>
+  <% if privacy_group_member.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(privacy_group_member.errors.count, "error") %> prohibited this privacy_group_member from being saved:</h2>
+
+      <ul>
+      <% privacy_group_member.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :privacy_group_id %>
+    <%= form.text_field :privacy_group_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

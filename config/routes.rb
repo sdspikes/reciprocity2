@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :profile_items
+  resources :profile_item_categories
+  resources :privacy_group_members
+  resources :privacy_groups
   resources :seekings
   get 'compatibilities/unrated', :to => 'compatibilities#unrated_index'
   get 'compatibilities/rated', :to => 'compatibilities#rated_index'

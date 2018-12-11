@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_29_072237) do
+ActiveRecord::Schema.define(version: 2018_11_29_215727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,44 @@ ActiveRecord::Schema.define(version: 2018_08_29_072237) do
     t.index ["gender_id"], name: "index_match_people_on_gender_id"
   end
 
+  create_table "privacy_group_members", force: :cascade do |t|
+    t.bigint "privacy_group_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["privacy_group_id"], name: "index_privacy_group_members_on_privacy_group_id"
+    t.index ["user_id"], name: "index_privacy_group_members_on_user_id"
+  end
+
+  create_table "privacy_groups", force: :cascade do |t|
+    t.string "name"
+    t.bigint "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_privacy_groups_on_owner_id"
+  end
+
+  create_table "profile_item_categories", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "profile_items", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "privacy_group_id"
+    t.bigint "profile_item_category_id"
+    t.string "profile_item_data_type"
+    t.bigint "profile_item_data_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["privacy_group_id"], name: "index_profile_items_on_privacy_group_id"
+    t.index ["profile_item_category_id"], name: "index_profile_items_on_profile_item_category_id"
+    t.index ["profile_item_data_type", "profile_item_data_id"], name: "profile_item_data_id"
+    t.index ["user_id"], name: "index_profile_items_on_user_id"
+  end
+
   create_table "seekings", force: :cascade do |t|
     t.bigint "gender_id"
     t.bigint "match_person_id"
@@ -152,6 +190,12 @@ ActiveRecord::Schema.define(version: 2018_08_29_072237) do
   add_foreign_key "connections", "users", column: "requestee_id"
   add_foreign_key "connections", "users", column: "requester_id"
   add_foreign_key "match_people", "genders"
+  add_foreign_key "privacy_group_members", "privacy_groups"
+  add_foreign_key "privacy_group_members", "users"
+  add_foreign_key "privacy_groups", "users", column: "owner_id"
+  add_foreign_key "profile_items", "privacy_groups"
+  add_foreign_key "profile_items", "profile_item_categories"
+  add_foreign_key "profile_items", "users"
   add_foreign_key "seekings", "genders"
   add_foreign_key "seekings", "match_people"
 end
