@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_215727) do
+ActiveRecord::Schema.define(version: 2018_12_13_014458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_215727) do
   end
 
   create_table "genders", force: :cascade do |t|
-    t.string "name"
+    t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -159,6 +159,12 @@ ActiveRecord::Schema.define(version: 2018_11_29_215727) do
     t.datetime "updated_at", null: false
     t.index ["gender_id"], name: "index_seekings_on_gender_id"
     t.index ["match_person_id"], name: "index_seekings_on_match_person_id"
+  end
+
+  create_table "text_profile_items", force: :cascade do |t|
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

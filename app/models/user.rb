@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :incoming_checked, class_name: "User", through: :incoming
   has_many :privacy_groups, foreign_key: "owner_id"
   has_many :profile_items
+  has_many :genders, through: :profile_items, source: :profile_item_data, source_type: 'Gender'
+  has_many :text_profile_items, through: :profile_items, source: :profile_item_data, source_type: 'TextProfileItem'
 
   def get_checks_table
     users_to_activities = Hash[ User.all.collect do |u|

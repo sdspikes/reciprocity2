@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :set_profile_item_category, only: [:show, :edit, :update, :destroy]
+  before_action :set_profile_user, only: [:show, :edit, :update, :destroy]
 
   # GET /profile_item_categories
   # GET /profile_item_categories.json
@@ -10,7 +10,7 @@ class ProfilesController < ApplicationController
   # GET /profile_item_categories/1
   # GET /profile_item_categories/1.json
   def show
-    @profile = current_user.profile_items
+    @profile_items = @profile_user.profile_items
   end
 
   # GET /profile_item_categories/new
@@ -38,8 +38,9 @@ class ProfilesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_profile_item_category
-      @profile_item_category = ProfileItemCategory.find(params[:id])
+    def set_profile_user
+
+      @profile_user = User.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
