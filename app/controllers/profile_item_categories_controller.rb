@@ -1,5 +1,4 @@
-class ProfileItemCategoriesController < ApplicationController
-  before_action :set_profile_item_category, only: [:show, :edit, :update, :destroy]
+class ProfileController < ApplicationController
 
   # GET /profile_item_categories
   # GET /profile_item_categories.json
