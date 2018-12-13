@@ -72,3 +72,6 @@ gem 'pry-rails'
 gem 'bootstrap', '~> 4.1.0'
 gem 'rails_bootstrap_navbar'
 gem 'jquery-rails'
+
+
+gem 'faker'
