@@ -8,9 +8,12 @@
 <% @profile_items.each do |profile_item| %>
 <div>
 	<p>
-	  <strong><%= profile_item.profile_item_category.title %>:</strong>
-	  <%= profile_item.profile_item_data.value %>
+		<%= render partial: "profile_item_show", locals: {profile_item: profile_item} %>
 	</p>
+	<% if @profile_user == current_user %>
+		<%= link_to "Edit", edit_profile_item_path(profile_item.id) %>
+	<% end %>
+
 </div>
 <% end %>
 

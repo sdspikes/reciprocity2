@@ -4,7 +4,12 @@ class ProfilesController < ApplicationController
   # GET /profile_item_categories
   # GET /profile_item_categories.json
   def index
-    @profiles = User.all.map { |u| u.profile_items }
+    @checks = Check.all
+    @new_check = Check.new
+    @users = User.all
+    @activities = Activity.all
+    @current_user = current_user
+    @users_to_activities = (@current_user && @current_user.get_checks_table) || {}
   end
 
   # GET /profile_item_categories/1
