@@ -44,6 +44,7 @@ class ProfileItemsController < ApplicationController
       if @profile_item.update(profile_item_params)
         format.html { redirect_to @profile_item, notice: 'Profile item was successfully updated.' }
         format.json { render :show, status: :ok, location: @profile_item }
+        format.js {}
       else
         format.html { render :edit }
         format.json { render json: @profile_item.errors, status: :unprocessable_entity }
@@ -69,6 +70,11 @@ class ProfileItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def profile_item_params
-      params.require(:profile_item).permit(:user_id, :profile_item_category, :privacy_group_id, :data_id, profile_item_data_attributes: [:value])
+      params.require(:profile_item).permit(
+        :user_id,
+        :profile_item_category,
+        :privacy_group_id,
+        :profile_item_data_id,
+        profile_item_data_attributes: [:id, :value])
     end
 end

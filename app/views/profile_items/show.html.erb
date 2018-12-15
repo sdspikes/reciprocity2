@@ -20,5 +20,5 @@
   <%= @profile_item.profile_item_data.value %>
 </p>
 
-<%= link_to 'Edit', edit_profile_item_path(@profile_item) %> |
+<%= link_to 'Edit', edit_profile_item_path(@profile_item), remote: true %> |
 <%= link_to 'Back', profile_path(@profile_item.user_id) %>

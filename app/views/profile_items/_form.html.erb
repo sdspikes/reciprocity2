@@ -1,8 +1,11 @@
-Type: <%= profile_item.profile_item_category.title %>
+<% @title = profile_item.profile_item_category.title if profile_item.profile_item_category %>
+Type: <%= @title ? @title : collection_select(:profile_item_category, :profile_item_category_id, ProfileItemCategory.all, :id, :title) %>
 
 <% group = profile_item.privacy_group ? profile_item.privacy_group.name : " " %>
 <% profile_item_data = profile_item.profile_item_data %>
-<%= form_with(model: profile_item, local: true) do |form| %>
+<%= form_with(model: profile_item, remote: true, id: "edit_profile_item_form") do |form| %>
+  <% #So I've tried a ton of stuff here - format.js in edit and update controllers, remote true in a variety of places, changing the edit.html.erb to
+  # js.erb, having an additional edit file - the next search I want to try is "Remote: true inline edit" in Rails%>
   <% if profile_item.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(profile_item.errors.count, "error") %> prohibited this profile_item from being saved:</h2>
@@ -21,11 +24,25 @@ Type: <%= profile_item.profile_item_category.title %>
   </div>
 
   <% @profile_item_data = profile_item.profile_item_data %>
-  <%= form.fields_for :profile_item_data, @profile_item_data do |field| %>
-    <div class="field">
-      <%= field.label :value  %>
-      <%= field.text_field :value %>
-    </div>
+  <% if @profile_item.profile_item_data_type == "ProfileItemResponse" %>
+    <%= form.fields_for :profile_item_data, @profile_item_data do |field| %>
+      <%= field.label field.object.profile_item_category.title.to_sym %>
+      <% # Because I will most certainly forget: collection_select(1: The modified model (in this case, Profile Item needs to-)
+      # 2. The relation you intend to modify (-modify the profile_item_data_id because that's the foreign key that connects to the value)
+      # 3. The record from which your options are drawn, filtered appropriately (i.e., I only want the matching profile item category)
+      # 4. The record in the options that that corresponds to the association defined in 2
+      # 5. The labels on the options in the drop down, which has no real bearing on the actual thing you're changing.)
+      # And that is how collection_select works
+      %>
+      <%= collection_select(:profile_item, :profile_item_data_id, ProfileItemResponse.where(profile_item_category_id: field.object.profile_item_category.id), :id, :value) %>
+    <% end %>
+  <% else %>
+    <%= form.fields_for :profile_item_data, @profile_item_data, remote: true  do |field| %>
+      <div class="field">
+        <%= field.label :value  %>
+        <%= field.text_field :value %>
+      </div>
+    <% end %>
   <% end %>
 
 

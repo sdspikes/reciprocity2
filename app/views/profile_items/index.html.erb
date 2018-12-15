@@ -25,7 +25,7 @@
         <%end%>
         <td><%= profile_item.profile_item_data.value %></td>
         <td><%= link_to 'Show', profile_item %></td>
-        <td><%= link_to 'Edit', edit_profile_item_path(profile_item) %></td>
+        <td><%= link_to 'Edit', edit_profile_item_path(profile_item), id: "edit_profile_item_form", remote: true %></td>
         <td><%= link_to 'Destroy', profile_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

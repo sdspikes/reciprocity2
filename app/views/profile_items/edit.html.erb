@@ -3,4 +3,4 @@
 <%= render 'form', profile_item: @profile_item %>
 
 <%= link_to 'Show', @profile_item %> |
-<%= link_to 'Back', profile_items_path %>
+<%= link_to 'Back', profile_path(@profile_item.user_id) %>
