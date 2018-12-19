@@ -30,7 +30,7 @@ Type: <%= profile_item.profile_item_category.title %>
   <% @profile_item_data = profile_item.profile_item_data %>
   <%= form_with(model: @profile_item_data) do |form| %>
     <div class="field">
-      <%= form.label :profile_item_data, :value  %>
-      <%= form.text_field :profile_item_data, :value %>
+      <%= form.label :value  %>
+      <%= form.text_field :value %>
     </div>
   <% end %>

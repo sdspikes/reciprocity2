@@ -19,6 +19,12 @@ class ProfileItemsController < ApplicationController
 
   # GET /profile_items/1/edit
   def edit
+    @profile_item = ProfileItem.find_by(id: params[:id])
+    if @profile_item
+      render :edit
+    else
+      render json: ["Not found"], status: 404
+    end
   end
 
   # POST /profile_items
