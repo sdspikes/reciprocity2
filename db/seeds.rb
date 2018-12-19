@@ -57,6 +57,8 @@ def create_bios
 	end
 end
 
+reset_users
+reset_activities
 ProfileItem.destroy_all
 create_profile_item_categories
 create_genders
