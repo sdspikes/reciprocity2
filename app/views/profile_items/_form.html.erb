@@ -20,6 +20,14 @@ Type: <%= profile_item.profile_item_category.title %>
     <%= form.text_field group %>
   </div>
 
+  <% @profile_item_data = profile_item.profile_item_data %>
+  <%= form.fields_for :profile_item_data, @profile_item_data do |field| %>
+    <div class="field">
+      <%= field.label :value  %>
+      <%= field.text_field :value %>
+    </div>
+  <% end %>
+
 
   <div class="actions">
     <%= form.submit %>
@@ -27,10 +35,4 @@ Type: <%= profile_item.profile_item_category.title %>
 <% end %>
 
 
-  <% @profile_item_data = profile_item.profile_item_data %>
-  <%= form_with(model: @profile_item_data) do |form| %>
-    <div class="field">
-      <%= form.label :value  %>
-      <%= form.text_field :value %>
-    </div>
-  <% end %>
+

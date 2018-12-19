@@ -16,10 +16,14 @@
   <tbody>
     <% @profile_items.each do |profile_item| %>
       <tr>
-        <td><%= profile_item.user %></td>
-        <td><%= profile_item.profile_item_category %></td>
-        <td><%= profile_item.privacy_group %></td>
-        <td><%= profile_item.data %></td>
+        <td><%= profile_item.user.name %></td>
+        <td><%= profile_item.profile_item_category.title %></td>
+        <% if profile_item.privacy_group %>
+          <td><%= profile_item.privacy_group.name %></td>
+        <% else %>
+          <td>No Privacy Group</td>
+        <%end%>
+        <td><%= profile_item.profile_item_data.value %></td>
         <td><%= link_to 'Show', profile_item %></td>
         <td><%= link_to 'Edit', edit_profile_item_path(profile_item) %></td>
         <td><%= link_to 'Destroy', profile_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>

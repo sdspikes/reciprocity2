@@ -19,12 +19,6 @@ class ProfileItemsController < ApplicationController
 
   # GET /profile_items/1/edit
   def edit
-    @profile_item = ProfileItem.find_by(id: params[:id])
-    if @profile_item
-      render :edit
-    else
-      render json: ["Not found"], status: 404
-    end
   end
 
   # POST /profile_items
@@ -75,6 +69,6 @@ class ProfileItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def profile_item_params
-      params.require(:profile_item).permit(:user_id, :profile_item_category, :privacy_group_id, :data_id)
+      params.require(:profile_item).permit(:user_id, :profile_item_category, :privacy_group_id, :data_id, profile_item_data_attributes: [:value])
     end
 end
