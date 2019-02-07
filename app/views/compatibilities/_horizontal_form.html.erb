@@ -1,0 +1,38 @@
+<%= form_with(model: compatibility, :html => {:class => "form-inline compatibility-form"}) do |form| %>
+  <% if compatibility.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(compatibility.errors.count, "error") %> prohibited this compatibility from being saved:</h2>
+
+      <ul>
+      <% compatibility.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :dealbreaker, 'db|'%>
+    <%= form.check_box :dealbreaker %>
+  </div>
+
+  <div class="field">
+    <%= form.label :introduction_made, 'intro|'%>
+    <%= form.check_box :introduction_made %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rating, 'rating'%>
+    <%= form.number_field :rating %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notes%>
+    <%= form.text_area :notes %>
+  </div>
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

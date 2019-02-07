@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+
+<div class="row">
+  <div class="col-lg-6">
+    <%= render :partial => 'show_individual', locals: {match_person: @match_person} %>
+  </div>
+  <div class="col-lg-6">
+    <h1>potential matches</h1>
+    <%= render partial: 'compatibilities', locals: {compatibilities: @compatibilities} %>
+  </div>
+</div>
+
+<%= link_to 'Edit', edit_match_person_path(@match_person) %> |
+<%= link_to 'Back', match_people_path %>

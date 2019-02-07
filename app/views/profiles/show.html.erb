@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @profile_user.name %>
+</p>
+
+<% if @profile_user != current_user %>
+
+  <%= form_for :desired_activities do |f| %> 
+
+    <div class="field">
+      <%= f.label "Activities" %><br />
+      <%= collection_check_boxes :current_user, :activity_ids(@profile_user.id), Activity.all, :id, :title do |b| %>
+        <div class="collection-check-box">
+          <%= b.check_box  %>
+          <%= b.label %>
+        </div>
+      <% end %>
+    </div>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field "previous_checks", value: @activities %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
+
+<% @profile_items.each do |profile_item| %>
+<div>
+	<p>
+		<%= render partial: "profile_item_show", locals: {profile_item: profile_item} %>
+	</p>
+	<% if @profile_user == current_user %>
+		<%= link_to "Edit", edit_profile_item_path(profile_item.id) %>
+	<% end %>
+
+</div>
+<% end %>
+

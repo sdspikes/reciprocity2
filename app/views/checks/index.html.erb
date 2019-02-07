@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Reciprocity</h1>
+
+<table id="check-people">
+  <thead>
+    <tr>
+      <td>Name</td>
+      <% @activities.each do |activity| %>
+        <td><%= activity.title %></td>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= form_for :activities do |f| %> 
+      <% @users.each do |user| %>
+        <% if current_user && user.id != @current_user.id %>
+          <tr>
+            <td><%= link_to user.name, profile_path(user.id) %> </td>
+            <% @activities.each do |activity| %>
+              <% if @users_to_activities[user.id][activity.id][:status] == :unchecked %>
+                <td><%= check_box_tag @users_to_activities[user.id][activity.id][:status],   activity_user_checks_path(activity.id, user.id), method: :post %></td>
+               <% else %>
+                <td><%= check_box_tag @users_to_activities[user.id][activity.id][:status], check_path(@users_to_activities[user.id][activity.id][:check_id]), method: :delete %></td>
+               <% end %>
+             <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+      <%= f.submit %>
+    <% end %>
+
+  </tbody>
+</table>
+
+<br>

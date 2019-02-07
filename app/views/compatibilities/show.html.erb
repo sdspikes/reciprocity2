@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<%= render 'form', compatibility: @compatibility %>
+
+
+<% if @next && @next.id %>
+  <%= link_to 'Next', compatibility_path(@next.id) %>
+<% end %>
+|
+<%= link_to 'all compatibilities list', compatibilities_path %>
+|
+<%= link_to 'unrated', compatibilities_unrated_path %>
+
+
+<div class="row">
+  <div class="col-lg-6">
+    <%= render :partial => 'match_people/show_individual', locals: {match_person: @compatibility.match_person_1} %>
+  </div>
+  <div class="col-lg-6">
+    <%= render :partial => 'match_people/show_individual', locals: {match_person: @compatibility.match_person_2} %>
+  </div>
+</div>
+
+

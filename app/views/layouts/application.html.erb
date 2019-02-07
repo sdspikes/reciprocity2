@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Preferences</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Preferences.io</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <% if user_signed_in? %>
+            <li class="nav-item active nav-link"><%= link_to current_user[:name], checks_path %></li>
+            <li class="nav-item active nav-link"><%= link_to('My Account', edit_user_registration_path) %></li>
+            <li class="nav-item active nav-link"><%= link_to('My Profile', profile_path(current_user.id)) %></li>
+            <li class="nav-item active nav-link"><%= link_to('Manage Privacy', privacy_groups_path) %></li>
+            <li class="nav-item nav-link"><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+          <% else %>
+            <li class="nav-item active nav-link"><%= link_to('Sign in', new_user_session_path) %></li>
+            <li class="nav-item nav-link"><%= link_to('Sign up', new_user_registration_path) %></li>
+          <% end %>
+          <!-- for putting more stuff in the nav bar
+            https://getbootstrap.com/docs/4.0/components/navbar/ -->
+      </div>
+    </nav>
+    <%= yield %>
+  </body>
+</html>

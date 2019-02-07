@@ -1,0 +1,38 @@
+Type: <%= profile_item.profile_item_category.title %>
+
+<% group = profile_item.privacy_group ? profile_item.privacy_group.name : " " %>
+<% profile_item_data = profile_item.profile_item_data %>
+<%= form_with(model: profile_item, local: true) do |form| %>
+  <% if profile_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(profile_item.errors.count, "error") %> prohibited this profile_item from being saved:</h2>
+
+      <ul>
+      <% profile_item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :privacy_group_id %>
+    <%= form.text_field group %>
+  </div>
+
+  <% @profile_item_data = profile_item.profile_item_data %>
+  <%= form.fields_for :profile_item_data, @profile_item_data do |field| %>
+    <div class="field">
+      <%= field.label :value  %>
+      <%= field.text_field :value %>
+    </div>
+  <% end %>
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+

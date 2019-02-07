@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @profile_item_category.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @profile_item_category.description %>
+</p>
+
+<%= link_to 'Edit', edit_profile_item_category_path(@profile_item_category) %> |
+<%= link_to 'Back', profile_item_categories_path %>

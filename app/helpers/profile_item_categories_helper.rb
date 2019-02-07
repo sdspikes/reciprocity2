@@ -1,0 +1,2 @@
+module ProfileItemCategoriesHelper
+end

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @profile_item.user.name %>
+</p>
+
+<p>
+  <strong>Profile item category:</strong>
+  <%= @profile_item.profile_item_category.title %>
+</p>
+
+<p>
+  <strong>Privacy group:</strong>
+  <%= @profile_item.privacy_group %>
+</p>
+
+<p>
+  <strong>Data:</strong>
+  <%= @profile_item.profile_item_data.value %>
+</p>
+
+<%= link_to 'Edit', edit_profile_item_path(@profile_item) %> |
+<%= link_to 'Back', profile_path(@profile_item.user_id) %>

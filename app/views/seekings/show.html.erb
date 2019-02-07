@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Gender:</strong>
+  <%= @seeking.gender %>
+</p>
+
+<p>
+  <strong>Match person:</strong>
+  <%= @seeking.match_person %>
+</p>
+
+<%= link_to 'Edit', edit_seeking_path(@seeking) %> |
+<%= link_to 'Back', seekings_path %>

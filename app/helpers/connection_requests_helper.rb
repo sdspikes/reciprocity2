@@ -1,0 +1,2 @@
+module ConnectionRequestsHelper
+end
