@@ -13,7 +13,7 @@ def destroy_all
 	PrivacyGroup.destroy_all
 end
 
-destroy_all
+# destroy_all
 
 def reset_users
 	User.destroy_all
@@ -35,16 +35,17 @@ def reset_activities
 end
 
 def create_profile_item_categories
+	ProfileItem.destroy_all
 	ProfileItemCategory.destroy_all
-	ProfileItemCategory.create(title: "gender", description: "the gender the user identifies as")
-	ProfileItemCategory.create(title: "bio", description: "short description")
-	ProfileItemCategory.create(title: "looking for", description: "what genders you are open to dating")
-	ProfileItemCategory.create(title: "want kids", description: "whether you are interested in having kids")
+	ProfileItemCategory.create(title: "gender", description: "the gender the user identifies as", item_type: "multi")
+	ProfileItemCategory.create(title: "bio", description: "short description", item_type: "text")
+	ProfileItemCategory.create(title: "looking for", description: "what genders you are open to dating", item_type: "text")
+	ProfileItemCategory.create(title: "want kids", description: "whether you are interested in having kids", item_type: "multi")
 end
 
 
 def create_genders
-	gender_options = [Gender.create(value: 'female'), Gender.create(value: 'male'), Gender.create(value: 'non-binary')]
+	gender_options = [ProfileItemResponse.create(value: 'female', profile_item_category: ProfileItemCategory.first), ProfileItemResponse.create(value: 'male', profile_item_category: ProfileItemCategory.first), ProfileItemResponse.create(value: 'non-binary', profile_item_category: ProfileItemCategory.first)]
 
 	User.all.each do |u|
 		pi = ProfileItem.create(user: u, profile_item_category: ProfileItemCategory.first, profile_item_data: gender_options.sample)
@@ -57,9 +58,9 @@ def create_bios
 	end
 end
 
-reset_users
-reset_activities
-ProfileItem.destroy_all
+# reset_users
+# reset_activities
+# ProfileItem.destroy_all
 create_profile_item_categories
 create_genders
 create_bios

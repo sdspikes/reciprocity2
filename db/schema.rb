@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_13_014458) do
+ActiveRecord::Schema.define(version: 2018_12_15_064839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,15 @@ ActiveRecord::Schema.define(version: 2018_12_13_014458) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "item_type", default: 0
+  end
+
+  create_table "profile_item_responses", force: :cascade do |t|
+    t.string "value"
+    t.bigint "profile_item_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_item_category_id"], name: "index_profile_item_responses_on_profile_item_category_id"
   end
 
   create_table "profile_items", force: :cascade do |t|
@@ -199,6 +208,7 @@ ActiveRecord::Schema.define(version: 2018_12_13_014458) do
   add_foreign_key "privacy_group_members", "privacy_groups"
   add_foreign_key "privacy_group_members", "users"
   add_foreign_key "privacy_groups", "users", column: "owner_id"
+  add_foreign_key "profile_item_responses", "profile_item_categories"
   add_foreign_key "profile_items", "privacy_groups"
   add_foreign_key "profile_items", "profile_item_categories"
   add_foreign_key "profile_items", "users"
