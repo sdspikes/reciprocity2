@@ -5,10 +5,16 @@
   <%= @privacy_group.name %>
 </p>
 
-<p>
-  <strong>Owner:</strong>
-  <%= @privacy_group.owner %>
-</p>
+<%= form_tag profiles_path, method: :get do %>
+  <%= text_field_tag :query, params[:query], class: 'form-control', id: "activity_search"  %>
+  <%= submit_tag 'Search' %>
+<% end %>
+
+<% @privacy_group_members.each do |user| %>
+  <div>
+    <%= user.name %>
+  </div>
+<% end %>
 
 <%= link_to 'Edit', edit_privacy_group_path(@privacy_group) %> |
 <%= link_to 'Back', privacy_groups_path %>

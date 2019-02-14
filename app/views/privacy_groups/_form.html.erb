@@ -16,10 +16,7 @@
     <%= form.text_field :name %>
   </div>
 
-  <div class="field">
-    <%= form.label :owner_id %>
-    <%= form.text_field :owner_id %>
-  </div>
+  <%= hidden_field(:privacy_group, :owner_id, value: current_user.id) %>
 
   <div class="actions">
     <%= form.submit %>
