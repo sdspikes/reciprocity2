@@ -259,7 +259,7 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
   if Rails.env.production?
-    config.omniauth :facebook, ENV['FB_APP_ID'], ENV['FB_APP_SECRET'], callback_url: "https://" + ENV['HEROKU_APP_NAME'] + ".herokuapp.com/users/auth/facebook/callback"
+    config.omniauth :facebook, ENV['FB_APP_ID'], ENV['FB_APP_SECRET'], callback_url: "https://reciprocity-2.herokuapp.com/users/auth/facebook/callback"
   else
     config.omniauth :facebook, ENV['TEST_FB_APP_ID'], ENV['TEST_FB_APP_SECRET'], callback_url: "https://www.localhost:3000/users/auth/facebook/callback"
   end
