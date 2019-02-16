@@ -45,3 +45,6 @@ bower.json
 
 # ignore the untracked directory
 untracked/*
+
+# RSpec's example_status_persistence_file_path
+spec/examples.txt
