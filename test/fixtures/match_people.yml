@@ -7,27 +7,23 @@ one:
   fb: MyString
   li: MyString
   age: 1
-  range_min: 1
-  range_max: 1
   occupation: MyString
   location: MyString
   gender: one
   openness: 1
-  asexual: 
-  aromantic: 
   current_partners: MyText
   situation: MyText
   kids: MyText
-  ask_first: 
+  ask_first:
   keep_dating: MyString
-  only_strong_match: 
+  only_strong_match:
   num_matches: MyString
   important: MyText
   disappointments: MyText
   date_activities: MyText
   murphyjitsu: MyText
   incompatible: MyText
-  continue_matching: 
+  continue_matching:
   anything_else: MyText
   notes: MyText
 
@@ -38,26 +34,22 @@ two:
   fb: MyString
   li: MyString
   age: 1
-  range_min: 1
-  range_max: 1
   occupation: MyString
   location: MyString
   gender: two
   openness: 1
-  asexual: 
-  aromantic: 
   current_partners: MyText
   situation: MyText
   kids: MyText
-  ask_first: 
+  ask_first:
   keep_dating: MyString
-  only_strong_match: 
+  only_strong_match:
   num_matches: MyString
   important: MyText
   disappointments: MyText
   date_activities: MyText
   murphyjitsu: MyText
   incompatible: MyText
-  continue_matching: 
+  continue_matching:
   anything_else: MyText
   notes: MyText
