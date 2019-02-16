@@ -25,6 +25,7 @@ class ProfileItemsController < ApplicationController
   # POST /profile_items.json
   def create
     @profile_item = ProfileItem.new(profile_item_params)
+    @profile_item.user = current_user
 
     respond_to do |format|
       if @profile_item.save
@@ -72,9 +73,10 @@ class ProfileItemsController < ApplicationController
     def profile_item_params
       params.require(:profile_item).permit(
         :user_id,
-        :profile_item_category,
+        :profile_item_category_id,
         :privacy_group_id,
         :profile_item_data_id,
+        :profile_item_data_type,
         profile_item_data_attributes: [:id, :value])
     end
 end

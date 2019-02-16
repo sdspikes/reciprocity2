@@ -1,9 +1,11 @@
 <% @title = profile_item.profile_item_category.title if profile_item.profile_item_category %>
-Type: <%= @title ? @title : collection_select(:profile_item_category, :profile_item_category_id, ProfileItemCategory.all, :id, :title) %>
 
 <% group = profile_item.privacy_group ? profile_item.privacy_group.name : " " %>
 <% profile_item_data = profile_item.profile_item_data %>
 <%= form_with(model: profile_item, remote: true, id: "edit_profile_item_form") do |form| %>
+  <% profile_item.profile_item_category = ProfileItemCategory.new if not profile_item.profile_item_category%>
+  <%= form.label(:category) %>
+  <%= form.collection_select(:profile_item_category_id, ProfileItemCategory.all, :id, :title) %>
   <% #So I've tried a ton of stuff here - format.js in edit and update controllers, remote true in a variety of places, changing the edit.html.erb to
   # js.erb, having an additional edit file - the next search I want to try is "Remote: true inline edit" in Rails%>
   <% if profile_item.errors.any? %>
@@ -18,13 +20,10 @@ Type: <%= @title ? @title : collection_select(:profile_item_category, :profile_i
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :privacy_group_id %>
-    <%= form.text_field group %>
-  </div>
 
-  <% @profile_item_data = profile_item.profile_item_data %>
-  <% if @profile_item.profile_item_data_type == "ProfileItemResponse" %>
+  <% # TODO: figure out how to actually get item type for currently selected category -- currently always thinks it's the original category or text for new. %>
+  <% @category = @profile_item.profile_item_category || ProfileItemCategory.find(@profile_item.profile_item_category_id) %>
+  <% if @category && @category.item_type == "multi" %>
     <%= form.fields_for :profile_item_data, @profile_item_data do |field| %>
       <%= field.label field.object.profile_item_category.title.to_sym %>
       <% # Because I will most certainly forget: collection_select(1: The modified model (in this case, Profile Item needs to-)
@@ -37,11 +36,11 @@ Type: <%= @title ? @title : collection_select(:profile_item_category, :profile_i
       <%= collection_select(:profile_item, :profile_item_data_id, ProfileItemResponse.where(profile_item_category_id: field.object.profile_item_category.id), :id, :value) %>
     <% end %>
   <% else %>
+    <% @profile_item_data = TextProfileItem.new %>
+    <%= form.hidden_field(:profile_item_data_type, value: 'TextProfileItem') %>
     <%= form.fields_for :profile_item_data, @profile_item_data, remote: true  do |field| %>
-      <div class="field">
-        <%= field.label :value  %>
-        <%= field.text_field :value %>
-      </div>
+      <%= form.label(:value) %>
+      <%= field.text_field(:value) %>
     <% end %>
   <% end %>
 
