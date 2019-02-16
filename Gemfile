@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.4.2'
+ruby '2.4.4'
 
 # ENV
 gem 'dotenv-rails', groups: [:development, :test]
@@ -77,3 +77,5 @@ gem 'jquery-rails'
 
 
 gem 'faker'
+
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
