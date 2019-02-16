@@ -10,7 +10,7 @@ class PrivacyGroupsController < ApplicationController
   # GET /privacy_groups/1
   # GET /privacy_groups/1.json
   def show
-    @privacy_group_members = PrivacyGroupMember.where(privacy_group_id: @privacy_group.id)
+    @member_names = @privacy_group.privacy_group_members.includes(:user).pluck("users.name")
   end
 
   # GET /privacy_groups/new
