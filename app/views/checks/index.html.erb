@@ -5,7 +5,8 @@
 <% if !current_user %>
   Please <%= link_to('Sign in', new_user_session_path) %> or <%= link_to('Register', new_user_registration_path) %>!
 <% else %>
-
+  <%= react_component("Checks", { activities: @activities, users_to_activities: @users_to_activities, users: @users }) %>
+<!--
   <table>
     <thead>
       <tr>
@@ -33,7 +34,7 @@
       <% end %>
 
     </tbody>
-  </table>
+  </table> -->
 <% end %>
 
 <br>
