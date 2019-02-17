@@ -1,10 +1,12 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>User:</strong>
-  <%= @profile_user.name %>
-</p>
 
+<h2>
+  <%= @profile_user.name %>
+</h2>
+
+<%= react_component("Profile", { profile: { values: @basic_profile_items }, editing: current_user == @profile_user }) %>
+<!--
 <% @profile_items.each do |profile_item| %>
 <div>
 	<p>
@@ -18,3 +20,4 @@
 <% end %>
 <%= link_to "New Profile Item", new_profile_item_path %>
 
+ -->

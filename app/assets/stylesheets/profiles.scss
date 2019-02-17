@@ -1,0 +1,17 @@
+/*rofile {
+
+}*/
+
+.profile-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.box {
+  border: 1px solid grey;
+  background-color: lightgrey;
+  padding: 10px;
+  margin: 5px;
+  flex-direction: row;
+}

@@ -48,3 +48,8 @@ untracked/*
 
 # RSpec's example_status_persistence_file_path
 spec/examples.txt
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity

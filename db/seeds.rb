@@ -36,7 +36,7 @@ end
 
 def create_profile_item_categories
 	ProfileItem.destroy_all
-	ProfileItemCategory.destroy_all
+	# ProfileItemCategory.destroy_all
 	ProfileItemCategory.create(title: "gender", description: "the gender the user identifies as", item_type: "multi")
 	ProfileItemCategory.create(title: "bio", description: "short description", item_type: "text")
 	ProfileItemCategory.create(title: "looking for", description: "what genders you are open to dating", item_type: "text")
@@ -57,7 +57,9 @@ def create_bios
 		pi = ProfileItem.create(user: u, profile_item_category: ProfileItemCategory.all[1], profile_item_data: TextProfileItem.create(value: Faker::Lorem.words(50).join(" ")))
 	end
 end
-
+destroy_all
+reset_users
+reset_activities
 create_profile_item_categories
 create_genders
 create_bios

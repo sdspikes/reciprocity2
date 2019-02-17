@@ -81,3 +81,6 @@ gem 'jquery-rails'
 
 
 gem 'faker'
+
+gem 'webpacker'
+gem 'react-rails'
