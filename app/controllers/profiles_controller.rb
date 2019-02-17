@@ -15,7 +15,7 @@ class ProfilesController < ApplicationController
   # GET /profile_item_categories/1
   # GET /profile_item_categories/1.json
   def show
-    @profile_items = @profile_user.profile_items
+    @profile_items = ProfileItem.get_viewable(@profile_user, current_user)
   end
 
   # GET /profile_item_categories/new
