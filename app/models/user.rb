@@ -33,6 +33,11 @@ class User < ApplicationRecord
   end
 
 
+  def get_values
+    self.profile_items.to_a.map { |x| [x.profile_item_category.title, x.profile_item_data.value] }.to_h
+  end
+
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

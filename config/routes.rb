@@ -19,7 +19,9 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :categories
   resources :checks, only: [:index, :destroy]
+  put "api/profiles/update_item", to: "profiles#update_item", as: "update_item"
   resources :profiles
+
   resources :text_profile_item
   resources :gender
   resources :profile_item_responses
