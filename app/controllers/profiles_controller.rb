@@ -17,7 +17,8 @@ class ProfilesController < ApplicationController
   # GET /profile_item_categories/1
   # GET /profile_item_categories/1.json
   def show
-    @profile_items = @profile_user.profile_items
+    @profile_items = ProfileItem.get_viewable(@profile_user, current_user)
+#     TODO(sdspkes): hide basic items if not filled in or not allowed due to privacy
     @basic_profile_items = {
       age: @profile_user.age,
       bio: @profile_user.bio,
