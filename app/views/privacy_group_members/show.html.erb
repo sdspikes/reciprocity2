@@ -2,12 +2,12 @@
 
 <p>
   <strong>Privacy group:</strong>
-  <%= @privacy_group_member.privacy_group %>
+  <%= @privacy_group_member.privacy_group.name %>
 </p>
 
 <p>
   <strong>User:</strong>
-  <%= @privacy_group_member.user %>
+  <%= @privacy_group_member.user.name %>
 </p>
 
 <%= link_to 'Edit', edit_privacy_group_member_path(@privacy_group_member) %> |

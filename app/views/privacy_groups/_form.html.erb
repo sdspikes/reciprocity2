@@ -21,4 +21,27 @@
   <div class="actions">
     <%= form.submit %>
   </div>
+
+<% end %>
+
+<% if params[:action] == "edit"  %>
+  <% @eligible_non_members.each do |user_id, name| %>
+    <%= form_with(model: PrivacyGroupMember.new, local: true) do |form| %>
+      <%= name %>
+
+      <div class="field">
+        <%= form.hidden_field :privacy_group_id, value: @privacy_group.id %>
+      </div>
+
+      <div class="field">
+        <%= form.hidden_field :user_id, value: user_id %>
+        <%#= form.label :user_id %>
+        <%#= form.text_field :user_id, value: user_id %>
+      </div>
+
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>

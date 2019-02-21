@@ -10,7 +10,7 @@ class PrivacyGroupsController < ApplicationController
   # GET /privacy_groups/1
   # GET /privacy_groups/1.json
   def show
-    @privacy_group_members = PrivacyGroupMember.where(privacy_group_id: @privacy_group.id)
+    @member_names = @privacy_group.privacy_group_members.includes(:user).pluck("users.name")
   end
 
   # GET /privacy_groups/new
@@ -20,6 +20,10 @@ class PrivacyGroupsController < ApplicationController
 
   # GET /privacy_groups/1/edit
   def edit
+    @members = @privacy_group.
+      privacy_group_members.joins(:user).pluck("users.id, users.name")
+    ineligible_user_ids = @members.map(&:first) << @privacy_group.owner_id
+    @eligible_non_members = User.where.not(id: ineligible_user_ids).pluck(:id, :name)
   end
 
   # POST /privacy_groups
