@@ -6,7 +6,7 @@ class ChecksController < ApplicationController
   def index
     @checks = Check.all
     @new_check = Check.new
-    @users = User.all
+    @users = User.where.not(id: current_user.id)
     @activities = Activity.all
     @current_user = current_user
     @users_to_activities = (@current_user && @current_user.get_checks_table) || {}
