@@ -76,7 +76,7 @@ class Checks extends React.Component {
             </tr>
             {users.map((user, idx) =>
               <tr key={idx}>
-                <td>{user.name}</td>
+                <td><a href={`/profiles/${user.id}`}>{user.name}</a></td>
                 {activities.map((activity, idx) => {
                   const status = usersToActivities[user.id][activity.id].status;
                   const color = { "unchecked" : null, "checked": null, "reciprocated": "lightgreen" };
