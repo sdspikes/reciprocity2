@@ -1,15 +1,18 @@
 class ChecksController < ApplicationController
   before_action :set_check, only: [:show, :edit, :update, :destroy]
 
+  skip_before_action :verify_authenticity_token
+
   # GET /checks
   # GET /checks.json
   def index
-    @checks = Check.all
-    @new_check = Check.new
-    @users = User.where.not(id: current_user.id)
-    @activities = Activity.all
     @current_user = current_user
-    @users_to_activities = (@current_user && @current_user.get_checks_table) || {}
+    if (@current_user)
+      @checks = Check.all
+      @users = User.where.not(id: current_user.id)
+      @activities = Activity.all
+      @users_to_activities = @current_user.get_checks_table
+    end
   end
 
   # GET /checks/1
@@ -47,6 +50,33 @@ class ChecksController < ApplicationController
     end
   end
 
+  def create_check
+    new_check_params = {
+      activity_id: check_params["activity_id"].to_i,
+      checker_id: current_user.id,
+      checked_id: check_params["user_id"].to_i
+    }
+
+    @check = Check.new(new_check_params)
+    respond_to do |format|
+      if @check.save
+        reciprocated = Check.find_by(activity_id: new_check_params[:activity_id], checked_id: current_user.id, checker_id: new_check_params[:checked_id])
+        # TODO: if reciprocated, fire email notification to both
+        format.json  { render :json => {:check_id => @check.id, reciprocated: !!reciprocated} }
+      else
+        format.json  { render :json => @check.errors }
+      end
+    end
+  end
+
+  def destroy_check
+    check_id = check_params[:check_id]
+    @check = Check.find(check_id)
+    @check.destroy
+    render :json => {:check_id => check_id}
+  end
+
+
   # PATCH/PUT /checks/1
   # PATCH/PUT /checks/1.json
   def update
@@ -64,6 +94,7 @@ class ChecksController < ApplicationController
   # DELETE /checks/1
   # DELETE /checks/1.json
   def destroy
+    return if !@check
     @check.destroy
     respond_to do |format|
       format.html { redirect_to checks_url, notice: 'Check was successfully destroyed.' }
@@ -79,6 +110,6 @@ class ChecksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def check_params
-      params.permit(:activity_id, :user_id)
+      params.permit(:activity_id, :user_id, :check_id)
     end
 end

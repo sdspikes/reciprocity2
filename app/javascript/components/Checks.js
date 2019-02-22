@@ -1,13 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-
-// const fields = {
-
-// }
-
-
-
 class Checks extends React.Component {
   constructor (props) {
     super(props);
@@ -16,15 +9,57 @@ class Checks extends React.Component {
     };
   }
 
-  handleClick(currentStatus, userId, activityId) {
-    const newCheckedness = currentStatus == unchecked;
-    console.log("todo: update db with the following:", newCheckedness, userId, activityId);
-    let newUsersToActivities = { ...this.state.usersToActivities }
-    updateServer(currentStatus, userId, activityId, (newCheckedness) => {
-      // handle stuff
+  newCheck (userId, activityId) {
+  // Default options are marked with *
+    return fetch("/api/checks/new", {
+        method: "PUT", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({activity_id: activityId, user_id: userId}), // body data type must match "Content-Type" header
+    }).then((response) => {
+      return response.json()
+    }).then((json) => {
+      let newUsersToActivities = {...this.state.usersToActivities};
+      newUsersToActivities[userId][activityId].check_id = json.check_id;
+      newUsersToActivities[userId][activityId].status = json.reciprocated ? 'reciprocated' : 'checked';
+      this.setState({ usersToActivities: newUsersToActivities});
+      // TODO: alert the user if there's a match
     })
+  }
 
-    // TODO: update the state, alert the user if there's a match
+  deleteCheck (userId, activityId, checkId) {
+    // Default options are marked with *
+    return fetch("/api/checks/delete", {
+        method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({check_id: checkId}), // body data type must match "Content-Type" header
+    }).then((response) => {
+      return response.json()
+    }).then((json) => {
+      // TODO: update the state to indicate that the check is gone
+      let newUsersToActivities = {...this.state.usersToActivities};
+      newUsersToActivities[userId][activityId].check_id = null;
+      newUsersToActivities[userId][activityId].status = 'unchecked';
+      this.setState({ usersToActivities: newUsersToActivities});
+    })
+  }
+
+  updateCheck(currentStatus, userId, activityId, newCheckedness) {
+    let newUsersToActivities = {...this.state.usersToActivities};
+    if (newCheckedness) {
+      // TODO: add a confirmation check with option to cancel
+      this.newCheck(userId, activityId);
+    } else {
+      this.deleteCheck(userId, activityId, newUsersToActivities[userId][activityId].check_id)
+    }
+  }
+
+  handleClick(currentStatus, userId, activityId) {
+    const newCheckedness = currentStatus == 'unchecked';
+    this.updateCheck(currentStatus, userId, activityId, newCheckedness)
   }
 
   render () {
@@ -44,8 +79,8 @@ class Checks extends React.Component {
                 <td>{user.name}</td>
                 {activities.map((activity, idx) => {
                   const status = usersToActivities[user.id][activity.id].status;
-                  const color = { "unchecked" : null, "checked": "#ddf", "reciprocated": "lightgreen" };
-                  return <td key={idx} style={{backgroundColor: color}}>
+                  const color = { "unchecked" : null, "checked": null, "reciprocated": "lightgreen" };
+                  return <td key={idx} style={{backgroundColor: color[status]}}>
                     <input
                       type="checkbox"
                       onChange={(e) => this.handleClick(status, user.id, activity.id)}
@@ -64,4 +99,6 @@ class Checks extends React.Component {
 }
 
 export default Checks;
+
+
 
