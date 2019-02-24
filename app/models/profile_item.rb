@@ -7,7 +7,7 @@ class ProfileItem < ApplicationRecord
 
   def self.get_viewable(user, viewer)
     # only show if there's no user group set (public) or the viewer is in a privacy groups belonging to the user
-    user.profile_items.to_a.select do |item|
+    viewable_items = user.profile_items.to_a.select do |item|
       !item.privacy_group || item.privacy_group.privacy_group_members.pluck(:user_id).include?(viewer.id)
     end
   end

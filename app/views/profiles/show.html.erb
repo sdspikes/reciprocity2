@@ -5,7 +5,7 @@
   <%= @profile_user.name %>
 </h2>
 
-<%= react_component("Profile", { profile: { values: @basic_profile_items }, editing: current_user == @profile_user }) %>
+<%= react_component("Profile", { profile: { values: @basic_profile_items, profile_items: @profile_items, item_data: @item_data, categories: @categories }, editing: current_user == @profile_user }) %>
 <!--
 <% @profile_items.each do |profile_item| %>
 <div>

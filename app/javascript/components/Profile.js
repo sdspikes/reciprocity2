@@ -7,8 +7,8 @@ import PropTypes from "prop-types"
 // }
 
 const fields = [
-    { type: "option",
-      name: "gender",
+    { item_type: "multi",
+      title: "gender",
       displayName: "Gender",
       options: [
         { name: "male" },
@@ -16,8 +16,8 @@ const fields = [
         { name: "nonbinary" },
       ]
     },
-    { type: "option",
-      name: "relationship_style",
+    { item_type: "multi",
+      title: "relationship_style",
       displayName: "Relationship style",
       options: [
         { name: "solo poly" },
@@ -25,8 +25,8 @@ const fields = [
         { name: "mono" },
       ]
     },
-    { type: "option",
-      name: "current_relationships",
+    { item_type: "multi",
+      title: "current_relationships",
       displayName: "Current relationships",
       options: [
         {name :"primary"},
@@ -37,16 +37,38 @@ const fields = [
     }
   ]
 
+function hashify(arr) {
+    return arr.reduce((h, item) => { h[item.id] = item; return h; }, {})
+}
+
 class Profile extends React.Component {
   constructor (props) {
     super(props);
+
+    const profile_items = props.profile.profile_items;
+    const item_data = props.profile.item_data;
+    const categories = props.profile.categories;
+
+
+    var category_hash = hashify(categories)
+    var item_data_hash = hashify(item_data)
+
     this.state = {
-      values: props.profile.values
+      values: props.profile.values,
+      profile_items: props.profile.profile_items,
+      item_data: item_data_hash,
+      categories: category_hash
     };
+    console.log(this.state.profile_items)
+    console.log(this.state.item_data)
+    console.log(this.state.categories)
+
+    // TODO: for multi, grab options from backend
   }
 
   render () {
     const privacyGroups = ["all", "friends"];
+    const { profile_items, item_data, categories } = this.state;
 
     const fakePrivacyGroup = <p><small>Privacy group:</small>&nbsp;
         <select>
@@ -68,26 +90,39 @@ class Profile extends React.Component {
           </div>
           <h4>Info</h4>
           <div className="profile-rhs">
-            {fields.map((field, idx) => {
-              const {type, name, displayName, options} = field;
+            {profile_items.map((item, idx) => {
+              // const {item_type, title, displayName, options} = field;
+              const {profile_item_data_id, profile_item_category_id} = item;
+              const { item_type, title } = categories[profile_item_category_id]
+              const data = item_data[profile_item_data_id]
+              const options = []
 
-              if (type == "option") {
+              if (item_type == "multi") {
                 return <div className="box" key={idx}>
-                    <span>{displayName || name}:&nbsp;</span>
+                    <span>{title}:&nbsp;</span>
                     {this.props.editing ?
                       <select
-                        value={this.state.values[name] || ""}
-                        onChange={(e) => this.updateValue(name, e.target.value)}>
+                        value={this.state.values[title] || ""}
+                        onChange={(e) => this.updateValue(profile_item_data_id, e.target.value)}>
                         <option value=""/>
                         {options.map((option, idx) =>
                             <option key={idx} value={option.name}>{option.name}</option>
                           )
                         }
                       </select> :
-                    <span>{this.state.values[name] || "??"}</span>}
+                    <span>{data.value || "??"}</span>}
+                  </div>;
+              } else if (item_type == "text") {
+                return <div className="box" key={idx}>
+                    <span>{title}:&nbsp;</span>
+                    {this.props.editing ?
+                      <input
+                        value={data.value || ""}
+                        onChange={(e) => this.updateText(profile_item_data_id, e.target.value)}/> :
+                    <span>{data.value || "??"}</span>}
                   </div>;
               } else {
-                return <p>Error: you tried to render a field with invalid type: {type}</p>;
+                return <p>Error: you tried to render a field with invalid type: {item_type}</p>;
               }
 
               }
@@ -98,13 +133,20 @@ class Profile extends React.Component {
     );
   }
 
+  updateText (data_id, newValue) {
+    let itemData = {...this.state.item_data};
+    itemData[data_id].value = newValue
+    this.setState({ item_data: itemData});
+    sendTextValueUpdate(data_id, newValue);
+  }
+
   updateValue (field, newValue) {
     let newValues = {...this.state.values};
     newValues[field] = newValue;
     this.setState({ values: newValues});
     // console.log("TODO: ajax. Field " + field + ", value " + newValue);
     // sendValueUpdate("/");
-    sendValueUpdate(field, newValue);
+    sendValueUpdate(data_id, newValue);
   }
 }
 
@@ -114,8 +156,20 @@ class Profile extends React.Component {
 export default Profile;
 
 
+function sendTextValueUpdate (data_id, value) {
+  // Default options are marked with *
+  // TODO(sdspikes): update route and options
+    return fetch("/text_profile_item", {
+        method: "PUT", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({profile_item_data_id: data_id, value: value}), // body data type must match "Content-Type" header
+    }) // .then((response) => {console.log(response.json())});
+}
 
-function sendValueUpdate (field, value) {
+
+function sendValueUpdateOld (field, value) {
   // Default options are marked with *
     return fetch("/api/profiles/update_item", {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
