@@ -10,16 +10,16 @@ Rails.application.routes.draw do
   # resources :compatibilities
   # resources :match_people
   resources :activities do
-    resources :users do
-      resources :checks, only: [:create]
-    end
+    resources :users
   end
   resources :connection_requests
   resources :connections
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :categories
-  resources :checks, only: [:index, :destroy]
+  resources :checks, only: [:create, :index]
   put "api/profiles/update_item", to: "profiles#update_item", as: "update_item"
+  put "api/checks/new", to: "checks#create_check", as: "create_check", defaults: { format: 'json' }
+  delete "api/checks/delete", to: "checks#destroy_check", as: "destroy_check"
   resources :profiles
 
   resources :text_profile_item

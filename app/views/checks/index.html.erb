@@ -5,35 +5,7 @@
 <% if !current_user %>
   Please <%= link_to('Sign in', new_user_session_path) %> or <%= link_to('Register', new_user_registration_path) %>!
 <% else %>
-
-  <table>
-    <thead>
-      <tr>
-        <td>Name</td>
-        <% @activities.each do |activity| %>
-          <td><%= activity.title %></td>
-        <% end %>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @users.each do |user| %>
-        <% if current_user && user.id != @current_user.id %>
-          <tr>
-            <td><%= link_to user.name, profile_path(user.id) %> </td>
-            <% @activities.each do |activity| %>
-              <% if @users_to_activities[user.id][activity.id][:status] == :unchecked %>
-                <td><%= link_to @users_to_activities[user.id][activity.id][:status], activity_user_checks_path(activity.id, user.id), method: :post %></td>
-               <% else %>
-                <td><%= link_to @users_to_activities[user.id][activity.id][:status], check_path(@users_to_activities[user.id][activity.id][:check_id]), method: :delete %></td>
-               <% end %>
-             <% end %>
-          </tr>
-        <% end %>
-      <% end %>
-
-    </tbody>
-  </table>
+  <%= react_component("Checks", { activities: @activities, users_to_activities: @users_to_activities, users: @users }) %>
 <% end %>
 
 <br>
