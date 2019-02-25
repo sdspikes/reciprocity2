@@ -1,5 +1,6 @@
 class ProfileItemsController < ApplicationController
   before_action :set_profile_item, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token
 
   # GET /profile_items
   # GET /profile_items.json
@@ -42,12 +43,12 @@ class ProfileItemsController < ApplicationController
   def update
     respond_to do |format|
       if @profile_item.update(profile_item_params)
-        format.html { redirect_to @profile_item, notice: 'Profile item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @profile_item }
-        format.js {}
+        # format.html { redirect_to @profile_item, notice: 'Profile item was successfully updated.' }
+        format.json { render json: { status: :ok, profile_item: @profile_item } }
+        # format.js {}
       else
-        format.html { render :edit }
-        format.json { render json: @profile_item.errors, status: :unprocessable_entity }
+        # format.html { render :edit }
+        format.json { render json: { errors: @profile_item.errors, status: :unprocessable_entity } }
       end
     end
   end

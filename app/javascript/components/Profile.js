@@ -103,7 +103,7 @@ class Profile extends React.Component {
                     {this.props.editing ?
                       <select
                         value={this.state.values[title] || ""}
-                        onChange={(e) => this.updateValue(profile_item_data_id, e.target.value)}>
+                        onChange={(e) => this.updateValue(item.id, profile_item_data_id, e.target.value)}>
                         <option value=""/>
                         {options.map((option, idx) =>
                             <option key={idx} value={option.name}>{option.name}</option>
@@ -118,7 +118,7 @@ class Profile extends React.Component {
                     {this.props.editing ?
                       <input
                         value={data.value || ""}
-                        onChange={(e) => this.updateText(profile_item_data_id, e.target.value)}/> :
+                        onChange={(e) => this.updateText(item.id, profile_item_data_id, e.target.value)}/> :
                     <span>{data.value || "??"}</span>}
                   </div>;
               } else {
@@ -133,11 +133,11 @@ class Profile extends React.Component {
     );
   }
 
-  updateText (data_id, newValue) {
+  updateText (profile_item_id, data_id, newValue) {
     let itemData = {...this.state.item_data};
     itemData[data_id].value = newValue
     this.setState({ item_data: itemData});
-    sendTextValueUpdate(data_id, newValue);
+    sendTextValueUpdate(profile_item_id, data_id, newValue);
   }
 
   updateValue (field, newValue) {
@@ -156,16 +156,16 @@ class Profile extends React.Component {
 export default Profile;
 
 
-function sendTextValueUpdate (data_id, value) {
-  // Default options are marked with *
-  // TODO(sdspikes): update route and options
-    return fetch("/text_profile_item", {
+function sendTextValueUpdate (profile_item_id, data_id, value) {
+  // TODO: should this be changed to an api path?
+    return fetch("/profile_items/" + profile_item_id, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({profile_item_data_id: data_id, value: value}), // body data type must match "Content-Type" header
-    }) // .then((response) => {console.log(response.json())});
+        body: JSON.stringify({profile_item_data_attributes: { id: data_id,  value: value }}), // body data type must match "Content-Type" header
+    })
+    // .then((response) => {console.log(response.json())});
 }
 
 
