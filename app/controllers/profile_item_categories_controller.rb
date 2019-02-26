@@ -1,4 +1,5 @@
-class ProfileController < ApplicationController
+class ProfileItemCategoriesController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   # GET /profile_item_categories
   # GET /profile_item_categories.json
@@ -19,6 +20,14 @@ class ProfileController < ApplicationController
   # GET /profile_item_categories/1/edit
   def edit
   end
+
+  def get_options
+    id = params[:id]
+
+    options = ProfileItemResponse.where(profile_item_category_id: id)
+    render json: {options: options}
+  end
+
 
   # POST /profile_item_categories
   # POST /profile_item_categories.json

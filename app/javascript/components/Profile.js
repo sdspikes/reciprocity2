@@ -55,15 +55,18 @@ class Profile extends React.Component {
 
     this.state = {
       values: props.profile.values,
-      profile_items: props.profile.profile_items,
+      profile_items: profile_items,
       item_data: item_data_hash,
       categories: category_hash
     };
-    console.log(this.state.profile_items)
-    console.log(this.state.item_data)
-    console.log(this.state.categories)
+    // console.log(this.state.profile_items)
+    // console.log(this.state.item_data)
+    // console.log(this.state.categories)
 
-    // TODO: for multi, grab options from backend
+    // grab options from backend for multi items
+    if (this.props.editing) {
+      profile_items.forEach((item, idx) => this.getOptions(item, idx))
+    }
   }
 
   render () {
@@ -80,37 +83,27 @@ class Profile extends React.Component {
     return (
       <React.Fragment>
         <div className="profile-box">
-          <div className="profile-lhs">
-            <div>
-              <Bio
-                editing={this.props.editing}
-                value={this.state.values.bio}
-                onChange={(x) => this.updateValue("bio", x)} />
-            </div>
-          </div>
-          <h4>Info</h4>
           <div className="profile-rhs">
             {profile_items.map((item, idx) => {
               // const {item_type, title, displayName, options} = field;
               const {profile_item_data_id, profile_item_category_id} = item;
               const { item_type, title } = categories[profile_item_category_id]
               const data = item_data[profile_item_data_id]
-              const options = []
+              const options = item.options || []
 
               if (item_type == "multi") {
                 return <div className="box" key={idx}>
                     <span>{title}:&nbsp;</span>
-                    {this.props.editing ?
+                    {this.props.editing && data.value ?
                       <select
-                        value={this.state.values[title] || ""}
-                        onChange={(e) => this.updateValue(item.id, profile_item_data_id, e.target.value)}>
-                        <option value=""/>
-                        {options.map((option, idx) =>
-                            <option key={idx} value={option.name}>{option.name}</option>
+                        value={data.value}
+                        onChange={(e) => this.updateOption(item, idx, e.target.value, e.target)}>
+                        {options.map((option) =>
+                            <option key={option.id} id={option.id} value={option.value}>{option.value}</option>
                           )
                         }
                       </select> :
-                    <span>{data.value || "??"}</span>}
+                    <span>{data.value || ""}</span>}
                   </div>;
               } else if (item_type == "text") {
                 return <div className="box" key={idx}>
@@ -124,9 +117,7 @@ class Profile extends React.Component {
               } else {
                 return <p>Error: you tried to render a field with invalid type: {item_type}</p>;
               }
-
-              }
-            )}
+            })}
           </div>
         </div>
       </React.Fragment>
@@ -140,78 +131,69 @@ class Profile extends React.Component {
     sendTextValueUpdate(profile_item_id, data_id, newValue);
   }
 
-  updateValue (field, newValue) {
-    let newValues = {...this.state.values};
-    newValues[field] = newValue;
-    this.setState({ values: newValues});
-    // console.log("TODO: ajax. Field " + field + ", value " + newValue);
-    // sendValueUpdate("/");
-    sendValueUpdate(data_id, newValue);
+  updateOption (item, item_index, newValue, target) {
+    var index = target.selectedIndex;
+    var optionElement = target.childNodes[index]
+    var option_id =  Number.parseInt(optionElement.getAttribute('id'));
+
+    let profileItems = this.state.profile_items
+    let itemData = {...this.state.item_data};
+    itemData[option_id] = item.options.find((option) => option_id === option.id);
+    profileItems[item_index].profile_item_data_id = option_id;
+    this.setState({ item_data: itemData, profile_items: profileItems});
+
+    sendOptionValueUpdate(item.id, option_id);
   }
+
+  getOptions (profile_item, index) {
+    if (this.state.categories[profile_item.profile_item_category_id].item_type !== "multi") return;
+    // TODO: should this be changed to an api path?
+    return fetch("/api/profile_item_categories/" + profile_item.profile_item_category_id + "/options", {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then((response) => { return response.json()})
+    .then((json) => {
+      // console.log(json)
+      this.updateOptions(index, profile_item, json.options)
+    })
+  }
+
+  updateOptions (index, profile_item, options) {
+    let profileItems = this.state.profile_items
+    profileItems[index].options = options;
+    this.setState({ profile_items: profileItems});
+    // this.forceUpdate();
+  }
+
 }
 
-// HelloWorld.propTypes = {
+// Profile.propTypes = {
 //   greeting: PropTypes.string
 // };
 export default Profile;
 
-
-function sendTextValueUpdate (profile_item_id, data_id, value) {
-  // TODO: should this be changed to an api path?
+function sendOptionValueUpdate (profile_item_id, data_id) {
     return fetch("/profile_items/" + profile_item_id, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({profile_item_data_attributes: { id: data_id,  value: value }}), // body data type must match "Content-Type" header
+        body: JSON.stringify({profile_item_data_id: data_id})
     })
     // .then((response) => {console.log(response.json())});
 }
 
 
-function sendValueUpdateOld (field, value) {
-  // Default options are marked with *
-    return fetch("/api/profiles/update_item", {
+function sendTextValueUpdate (profile_item_id, data_id, value) {
+    return fetch("/profile_items/" + profile_item_id, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({field: field, value: value}), // body data type must match "Content-Type" header
-    }) // .then((response) => {console.log(response.json())});
-}
-
-
-class Bio extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      currentlyEditing: false,
-      currentContents: props.value
-    };
-  }
-
-  render () {
-    return <div>
-      <h4>About me</h4>
-
-      {this.state.currentlyEditing ?
-        <div>
-          <textarea value={this.state.currentContents} onChange={(e) => this.setState({currentContents: e.target.value})} />
-          <div><button onClick={() => {
-            this.props.onChange(this.state.currentContents);
-            this.setState({currentlyEditing: false});
-          }}>
-            update bio
-          </button></div>
-        </div> :
-        <div>
-          {this.props.editing &&
-              <button onClick={() => {this.setState({currentlyEditing: true})}}>Edit</button>}
-          <p>{this.props.value || "No bio yet"}</p>
-        </div>
-      }
-
-    </div>
-  }
-
+        body: JSON.stringify({profile_item_data_attributes: { id: data_id,  value: value }})
+    })
+    // .then((response) => {console.log(response.json())});
 }
