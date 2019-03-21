@@ -2,41 +2,6 @@ import React from "react"
 import PropTypes from "prop-types"
 
 
-// const fields = {
-
-// }
-
-const fields = [
-    { item_type: "multi",
-      title: "gender",
-      displayName: "Gender",
-      options: [
-        { name: "male" },
-        { name: "female" },
-        { name: "nonbinary" },
-      ]
-    },
-    { item_type: "multi",
-      title: "relationship_style",
-      displayName: "Relationship style",
-      options: [
-        { name: "solo poly" },
-        { name: "hierarchical poly" },
-        { name: "mono" },
-      ]
-    },
-    { item_type: "multi",
-      title: "current_relationships",
-      displayName: "Current relationships",
-      options: [
-        {name :"primary"},
-        {name :"primary and secondaries"},
-        {name :"multiple non-hierarchical"},
-        {name :"seeking primary"}
-      ]
-    }
-  ]
-
 function hashify(arr) {
     return arr.reduce((h, item) => { h[item.id] = item; return h; }, {})
 }
