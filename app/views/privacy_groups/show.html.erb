@@ -5,7 +5,7 @@
   <%= @privacy_group.name %>
 </p>
 
-<%= react_component("PrivacyGroup", { group: @privacy_group, members: @members, member_users: @member_users, eligible_users: @eligible_users }) %>
+<%= react_component("PrivacyGroup", { privacy_group: @privacy_group, members: @members, member_users: @member_users, eligible_users: @eligible_users }) %>
 
 <%= link_to 'Edit', edit_privacy_group_path(@privacy_group) %> |
 <%= link_to 'Back', privacy_groups_path %>

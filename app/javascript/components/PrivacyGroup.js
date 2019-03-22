@@ -24,7 +24,7 @@ class PrivacyGroup extends React.Component {
     const { privacy_group, non_member_users, members, member_users } = this.state;
 
     // console.log(privacy_group)
-    console.log(members)
+    // console.log(members)
     // console.log(non_member_users)
     return (
       <React.Fragment>
@@ -58,54 +58,58 @@ class PrivacyGroup extends React.Component {
     );
   }
 
+  addUser (member_user, index) {
+    const {privacy_group}  = this.state;
+    this.newMember(member_user, index, privacy_group.id)
+  }
+
+  newMember (member_user, index, privacyGroupId) {
+  // Default options are marked with *
+    return fetch("/api/privacy_group_member/new", {
+        method: "PUT", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({privacy_group_member: {privacy_group_id: privacyGroupId, user_id: member_user.id}}), // body data type must match "Content-Type" header
+    }).then((response) => {
+      return response.json()
+    }).then((member) => {
+      const {member_users, members, non_member_users}  = this.state;
+      member_users.push(member_user);
+      non_member_users.splice(index, 1);
+      members[member.user_id] = member;
+
+      this.setState({ member_users: member_users});
+
+    })
+  }
+
   removeUser (member, index) {
-    const {member_users, members, non_member_users}  = this.state;
-    const privacyGroupMemberId = members[member.id].privacy_group_member_id
-    non_member_users.push(member);
-    member_users.splice(index, index+1); 
-
-    this.setState({ member_users: member_users});
-    // TODO: destroy privacy group member
-    console.log("destroy ", privacyGroupMemberId)
+    const {members}  = this.state;
+    const privacyGroupMemberId = members[member.id].id
+    this.deleteMember(member, index, privacyGroupMemberId)
   }
 
-  addUser (member, index) {
-    const {member_users, members, non_member_users}  = this.state;
-    member_users.push(member);
-    non_member_users.splice(index, index+1); 
+  deleteMember (member, index, memberId) {
+    // Default options are marked with *
+    return fetch("/api/privacy_group_member/delete", {
+        method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({id: memberId}), // body data type must match "Content-Type" header
+    }).then((response) => {
+      return response.json()
+    }).then((json) => {
+      const {member_users, non_member_users}  = this.state;
+      non_member_users.push(member);
+      member_users.splice(index, 1);
 
-    this.setState({ member_users: member_users});
-    // TODO: create privacy group member
-    console.log("create member with user_id ", member.id)
+      this.setState({ member_users: member_users});
+    })
   }
-
-  
-
 }
 // PrivacyGroup.propTypes = {
 //   greeting: PropTypes.string
 // };
 export default PrivacyGroup;
-
-function sendOptionValueUpdate (profile_item_id, data_id) {
-    return fetch("/profile_items/" + profile_item_id, {
-        method: "PUT", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({profile_item_data_id: data_id})
-    })
-    // .then((response) => {console.log(response.json())});
-}
-
-
-function sendTextValueUpdate (profile_item_id, data_id, value) {
-    return fetch("/profile_items/" + profile_item_id, {
-        method: "PUT", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({profile_item_data_attributes: { id: data_id,  value: value }})
-    })
-    // .then((response) => {console.log(response.json())});
-}

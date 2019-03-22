@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   put "api/profiles/update_item", to: "profiles#update_item", as: "update_item"
   put "api/checks/new", to: "checks#create_check", as: "create_check", defaults: { format: 'json' }
   delete "api/checks/delete", to: "checks#destroy_check", as: "destroy_check"
+  put "api/privacy_group_member/new", to: "privacy_group_members#create_member", as: "create_member", defaults: { format: 'json' }
+  delete "api/privacy_group_member/delete", to: "privacy_group_members#destroy_member", as: "destroy_member"
   resources :profiles
 
   resources :text_profile_item
