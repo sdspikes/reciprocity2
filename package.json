@@ -2,12 +2,18 @@
   "name": "preferences",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.15",
+    "@fortawesome/free-solid-svg-icons": "^5.7.2",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "@rails/webpacker": "3.5",
     "babel-preset-react": "^6.24.1",
+    "i": "^0.3.6",
+    "npm": "^6.8.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2",
-    "react_ujs": "^2.4.4"
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react_ujs": "^2.4.4",
+    "reactstrap": "^7.1.0"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"

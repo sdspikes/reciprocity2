@@ -1,5 +1,7 @@
 class PrivacyGroupMembersController < ApplicationController
-  before_action :set_privacy_group_member, only: [:show, :edit, :update, :destroy]
+  before_action :set_privacy_group_member, only: [:show, :edit, :update, :destroy, :destroy_member]
+
+  skip_before_action :verify_authenticity_token
 
   # GET /privacy_group_members
   # GET /privacy_group_members.json
@@ -37,6 +39,20 @@ class PrivacyGroupMembersController < ApplicationController
     end
   end
 
+  def create_member
+    @privacy_group_member = PrivacyGroupMember.new(privacy_group_member_params)
+
+    respond_to do |format|
+      if @privacy_group_member.save
+        format.html { redirect_to @privacy_group_member, notice: 'Privacy group member was successfully created.' }
+        format.json { render :show, status: :created, location: @privacy_group_member }
+      else
+        format.html { render :new }
+        format.json { render json: @privacy_group_member.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PATCH/PUT /privacy_group_members/1
   # PATCH/PUT /privacy_group_members/1.json
   def update
@@ -58,6 +74,14 @@ class PrivacyGroupMembersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to privacy_group_members_url, notice: 'Privacy group member was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def destroy_member
+    id = @privacy_group_member.id
+    @privacy_group_member.destroy
+    respond_to do |format|
+      format.json { render json: {id: id} }
     end
   end
 
