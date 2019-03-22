@@ -57,6 +57,7 @@ def create_bios
 		pi = ProfileItem.create(user: u, profile_item_category: ProfileItemCategory.all[1], profile_item_data: TextProfileItem.create(value: Faker::Lorem.words(50).join(" ")))
 	end
 end
+
 destroy_all
 reset_users
 reset_activities

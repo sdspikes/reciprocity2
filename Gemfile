@@ -72,6 +72,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # FB auth
 gem 'devise'
 gem 'omniauth-facebook'
+gem 'koala'
+
 gem 'pry-rails'
 
 gem 'bootstrap', '~> 4.1.0'

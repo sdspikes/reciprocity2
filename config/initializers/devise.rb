@@ -261,7 +261,7 @@ Devise.setup do |config|
   if Rails.env.production?
     config.omniauth :facebook, ENV['FB_APP_ID'], ENV['FB_APP_SECRET'], callback_url: "https://reciprocity-2.herokuapp.com/users/auth/facebook/callback"
   else
-    config.omniauth :facebook, ENV['TEST_FB_APP_ID'], ENV['TEST_FB_APP_SECRET'], callback_url: "https://www.localhost:3000/users/auth/facebook/callback"
+    config.omniauth :facebook, ENV['TEST_FB_APP_ID'], ENV['TEST_FB_APP_SECRET'], scope: 'email, user_friends', callback_url: "https://www.localhost:3000/users/auth/facebook/callback"
   end
 
   # ==> Warden configuration

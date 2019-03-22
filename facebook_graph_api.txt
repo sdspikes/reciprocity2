@@ -1,0 +1,18 @@
+Getting connections to populate a privacy group
+Auth through devise - which should allow us to query Facebook API
+Possibly extend to being able to import friends lists (and groups)
+
+Plan is to pull all the data in when user authenticates
+
+This might cover what we need - it looks like the gist of it is you pick which info fields you want facebook to give you access to, and the user
+will be asked if they give permission to expose those fields.
+
+https://www.sitepoint.com/rails-authentication-oauth-2-0-omniauth/
+
+People keep bringing up Koala though, and I note that the oauth2 thing doesn't seem to cover _actually getting a friend's list_
+
+All right!  So, setting up Facebook asks for your frembs - literally one line, just add scope="user_friends" to the devise thing
+
+Actually using frembs - well, that's what Koala is for - there's a facebook model that has methods get_object and get_connections, get_connections gives
+us the power of frembs
+
