@@ -1,11 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @privacy_group.name %>
-</p>
+<h1><%= @privacy_group.name %></h1>
 
 <%= react_component("PrivacyGroup", { privacy_group: @privacy_group, members: @members, member_users: @member_users, eligible_users: @eligible_users }) %>
 
-<%= link_to 'Edit', edit_privacy_group_path(@privacy_group) %> |
 <%= link_to 'Back', privacy_groups_path %>
