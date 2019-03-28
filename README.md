@@ -15,6 +15,9 @@ If you use [Homebrew](https://brew.sh/), `rbenv` is likely to be simpler.
 
 ##### Install rbenv if necessary
 See the docs for [rbenv](https://github.com/rbenv/rbenv)
+
+If using homebrew: `brew install rbenv`
+
 ##### Set version
 
 Run 
