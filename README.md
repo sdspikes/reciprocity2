@@ -1,6 +1,8 @@
 # README
 [![Build Status](https://travis-ci.org/sdspikes/reciprocity2.svg)](https://travis-ci.org/sdspikes/reciprocity2)
 
+Note: If you run into any issues during setup, please feel free to reach out by creating an [issue](https://github.com/sdspikes/reciprocity2/issues) on this repository!  If possible, include the command you ran and the error you ran into in the issue!
+
 ## Setting up your local environment
 
 ### Update your version of ruby
