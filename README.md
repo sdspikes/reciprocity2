@@ -37,9 +37,9 @@ rvm use 2.4.2
 
 ### Postgres
 
-Install postgress
+Install postgress (if using brew on Mac, follow [this guide](https://gist.github.com/ibraheem4/ce5ccd3e4d7a65589ce84f2a3b7c23a3), otherwise look up instructions for your OS)
 
-Set up postgres roles
+Make sure to set up postgres roles and start your postgres server.
 
 ### Bundle Install
 Now that you've got your version of ruby set up, in the root directory of the app, run 
@@ -52,7 +52,7 @@ This should grab all the ruby dependencies needed for the app.
 
 ### Yarn
 
-The frontend uses React, a javascript library, and we use the `yarn` package manager to manage dependencies.  You will need to install `yarn` then run `yarn install` to get all the dependencies.
+The frontend uses React, a javascript library, and we use the `yarn` package manager to manage dependencies.  You will need to install `yarn` (`brew install yarn`) then run `yarn install` to get all the dependencies.
 
 ### Set up database
 
@@ -75,7 +75,7 @@ https://www.devmynd.com/blog/rails-local-development-https-using-self-signed-ssl
 
 If you want to be able to log in locally using Facebook, create a new facebook app by going [here](https://developers.facebook.com/)
 
-Note: I used [this article](https://medium.com/@chinnatiptaemkaeo/integrate-omniauth-facebook-to-rails-5-1389d760d92a) to start the project initially, and it has better/more full instructions on this step.
+Note: I used [this article](https://medium.com/@chinnatiptaemkaeo/integrate-omniauth-facebook-to-rails-5-1389d760d92a) to start the project initially, and it has better/more full instructions on this step under "Step:1 create Facebook App."
 
 
 #### under **Settings** -> **Basic**
