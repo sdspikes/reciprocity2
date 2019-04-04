@@ -7,36 +7,9 @@ Note: If you run into any issues during setup, please feel free to reach out by 
 
 ### Update your version of ruby
 
-If you do not have a ruby version manager already, pick one of `rvm` and `rbenv`.  (If you aren't sure if you have either, run `which rvm` and `which rbenv` to check.)
+If you do not have a ruby version manager already, pick one of [`rvm`](README/rvm.md) and [`rbenv`](README/rbenv.md).  (If you aren't sure if you have either, run `which rvm` and `which rbenv` to check.)
 
 If you use [Homebrew](https://brew.sh/), `rbenv` is likely to be simpler.
-
-#### `rbenv`
-
-##### Install rbenv if necessary
-See the docs for [rbenv](https://github.com/rbenv/rbenv)
-
-If using homebrew: `brew install rbenv`
-
-##### Set local version
-In the home directory of this project, run the following commands to set the version of ruby that we're using for this project
-```
-rbenv install 2.4.2
-rbenv local 2.4.2
-```
-
-#### `rvm`
-
-##### Install rvm if necessary
-If you want to use RVM and don't have it, install [rvm](https://rvm.io/rvm/install)
-
-```curl -sSL https://get.rvm.io | bash -s stable --ruby```
-##### Set local version
-In the home directory of this project, run the following commands to set the version of ruby that we're using for this project
-```
-rvm install 2.4.2
-rvm use 2.4.2
-```
 
 ### Postgres
 
