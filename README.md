@@ -13,9 +13,11 @@ If you use [Homebrew](https://brew.sh/), `rbenv` is likely to be simpler.
 
 ### Postgres
 
-Install postgress. If using brew on Mac, follow [this guide](https://gist.github.com/ibraheem4/ce5ccd3e4d7a65589ce84f2a3b7c23a3), otherwise look up instructions for your OS.
+Install postgress. If using brew on Mac, follow [this guide](https://gist.github.com/ibraheem4/ce5ccd3e4d7a65589ce84f2a3b7c23a3) -- you can stop when you get to the "Details" section and you can use `brew services start postgres` and `brew services stop postgres` instead of creating custom aliases.
 
 Make sure to set up postgres roles and start your postgres server.
+
+You may need to run `brew services restart postgres` 
 
 ### Bundle Install
 Now that you've got your version of ruby set up, in the root directory of the app, run 
