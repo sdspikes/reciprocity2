@@ -54,4 +54,29 @@ class User < ApplicationRecord
       user.image = auth.info.image # assuming the user model has an image
     end
   end
+
+  # Gets the all other users sorted by relevence for a particular user.
+  def self.get_relevant_users(user_id)
+    # Order the other users by lexographically by three properties
+    # 1. If there is a matching check between them and the requested user.
+    # 2. If the requested user has a check for them.
+    # 3. Their creation date (descending).
+    users = User.arel_table
+    checks = Check.arel_table
+    other_checks = Check.arel_table.alias("other_checks")
+
+    matched_checks =
+        checks.join(other_checks).on(checks[:activity_id].eq(other_checks[:activity_id]).and(
+                                     checks[:checker_id].eq(other_checks[:checked_id])).and(
+                                     checks[:checked_id].eq(other_checks[:checker_id])))
+    is_my_check = checks[:checker_id].eq(user_id)
+    is_for_user = checks[:checked_id].eq(users[:id])
+
+    return User.all
+        .where.not(id: user_id)
+        .order(matched_checks.where(is_my_check.and(is_for_user)).exists.desc)
+        .order(checks.where(is_my_check.and(is_for_user)).exists.desc)
+        .order(users[:created_at].desc)
+  end
+
 end
