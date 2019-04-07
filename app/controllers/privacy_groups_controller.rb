@@ -4,7 +4,7 @@ class PrivacyGroupsController < ApplicationController
   # GET /privacy_groups
   # GET /privacy_groups.json
   def index
-    @privacy_groups = PrivacyGroup.all
+    @privacy_groups = current_user.privacy_groups
   end
 
   # GET /privacy_groups/1
