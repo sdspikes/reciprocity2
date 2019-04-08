@@ -3,6 +3,7 @@ class ProfileItem < ApplicationRecord
   belongs_to :privacy_group, optional: true
   belongs_to :profile_item_category
   belongs_to :profile_item_data, polymorphic: true
+
   accepts_nested_attributes_for :profile_item_data
 
   def self.get_viewable(user, viewer)

@@ -25,13 +25,18 @@ class ProfileItemsController < ApplicationController
   # POST /profile_items
   # POST /profile_items.json
   def create
-    @profile_item = ProfileItem.new(profile_item_params)
+    @category = ProfileItemCategory.find(profile_item_params[:profile_item_category_id])
+
+    @profile_item = ProfileItem.new(profile_item_category: @category, user: current_user)
+    p @profile_item
 
     respond_to do |format|
       if @profile_item.save
+        p 'yap'
         format.html { redirect_to @profile_item, notice: 'Profile item was successfully created.' }
         format.json { render :show, status: :created, location: @profile_item }
       else
+        p "nopp"
         format.html { render :new }
         format.json { render json: @profile_item.errors, status: :unprocessable_entity }
       end
@@ -73,7 +78,7 @@ class ProfileItemsController < ApplicationController
     def profile_item_params
       params.require(:profile_item).permit(
         :user_id,
-        :profile_item_category,
+        :profile_item_category_id,
         :privacy_group_id,
         :profile_item_data_id,
         profile_item_data_attributes: [:id, :value])

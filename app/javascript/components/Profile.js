@@ -60,6 +60,107 @@ class PrivacyGroupSelector extends React.Component {
   }
 }
 
+class NewProfileItem extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      categories: props.categories,
+      selected_category_id: Object.keys(props.categories)[0],
+      editing: false,
+      new_item: null,
+      options: [],
+    }
+  }
+
+  render () {
+    const {editing, categories, selected_category_id} = this.state
+    if (!editing) {
+      return <span id="new_item">
+        <select
+          value={selected_category_id}
+          onChange={(e) => this.updateCategoryId(e.target.value)}>
+          {Object.keys(categories).map((id) =>
+              <option key={id} id={id} value={id}>{categories[id].title}</option>
+            )
+          }
+        </select>
+        <button onClick={(e) => this.createNewItem()}>
+          Create new profile item
+        </button>
+      </span>
+    }
+
+    const {new_item} = this.state
+
+    const { item_type, title, data } = categories[selected_category_id]
+    const options = (categories[selected_category_id] && categories[selected_category_id].options) || []
+
+    return <div className="box">
+      <span>{title}:&nbsp;</span>
+        {item_type == "multi" && <select
+            value={new_item.profile_item_data_id}
+            onChange={(e) => this.updateValue(e.target)}>
+            {options.map((option) =>
+                <option key={option.id} id={option.id} value={option.id}>{option.value}</option>
+              )
+            }
+          </select>
+        }
+    </div>;
+  }
+  updateValue (target) {
+    var index = target.selectedIndex;
+    var optionElement = target.childNodes[index]
+    var option_id =  Number.parseInt(optionElement.getAttribute('id'));
+
+
+    const {new_item} = this.state
+    new_item.profile_item_data_id = option_id
+    this.setState({
+      new_item: new_item
+    })
+    console.log(this.state)
+
+  }
+//this.updateOption(item, -1, e.target.value, e.target)}>
+        // <PrivacyGroupSelector item={item} privacy_groups={privacy_groups} />
+  updateCategoryId (id) {
+    this.setState({selected_category_id: id})
+  }
+
+  createNewItem () {
+    const {selected_category_id, categories} = this.state
+
+    this.setState({
+      new_item: {
+        profile_item_category_id: selected_category_id
+      },
+      editing: true
+    })
+
+    // profile_items.push({profile_item_category_id: selected_category_id})
+  }
+}
+
+function getOptions (categories, profile_item_category_id, callback) {
+  console.log(categories, profile_item_category_id)
+  if (categories[profile_item_category_id].item_type !== "multi") return;
+  // TODO: should this be changed to an api path?
+  return fetch("/api/profile_item_categories/" + profile_item_category_id + "/options", {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+          "Content-Type": "application/json",
+      }
+  })
+  .then((response) => { return response.json()})
+  .then((json_response) => {
+    callback(json_response)
+    // console.log(json)
+  })
+}
+
+
 class Profile extends React.Component {
   constructor (props) {
     super(props);
@@ -85,57 +186,65 @@ class Profile extends React.Component {
 
     // grab options from backend for multi items
     if (this.props.editing) {
-      profile_items.forEach((item, idx) => this.getOptions(item, idx))
+      categories.forEach((category) =>
+        getOptions(category_hash, category.id, (json_response) => {
+          this.updateOptions(category.id, json_response.options)
+        }))
     }
   }
 
-  render () {
-    const { profile_items, item_data, categories, privacy_groups } = this.state;
+  render_item (item, idx) {
+    const { profile_items, item_data, categories, privacy_groups, selected_category_id } = this.state;
+    // const {item_type, title, displayName, options} = field;
+    const {profile_item_data_id, profile_item_category_id} = item;
+    const { item_type, title } = categories[profile_item_category_id]
+    const data = item_data[profile_item_data_id]
+    const options = (categories[profile_item_category_id] && categories[profile_item_category_id].options) || []
 
+    if (item_type == "multi") {
+      return <div className="box" key={idx}>
+          <span>{title}:&nbsp;</span>
+          {this.props.editing && data.value ?
+            <span>
+              <select
+                value={data.value}
+                onChange={(e) => this.updateOption(item, idx, e.target.value, e.target)}>
+                {options.map((option) =>
+                    <option key={option.id} id={option.id} value={option.value}>{option.value}</option>
+                  )
+                }
+              </select>
+              <PrivacyGroupSelector item={item} privacy_groups={privacy_groups} />
+            </span> :
+          <span>{data.value || ""}</span>}
+        </div>;
+    } else if (item_type == "text") {
+      return <div className="box" key={idx}>
+          <span>{title}:&nbsp;</span>
+          {this.props.editing ?
+            <span>
+              <input
+                value={data.value || ""}
+                onChange={(e) => this.updateText(item.id, profile_item_data_id, e.target.value)}/> 
+              <PrivacyGroupSelector item={item} privacy_groups={privacy_groups} />
+            </span> :
+          <span>{data.value || "??"}</span>}
+        </div>;
+    } else {
+      return <p>Error: you tried to render a field with invalid type: {item_type}</p>;
+    }
+  }
+
+
+  render () {
+    const { profile_items, item_data, categories, privacy_groups, selected_category_id } = this.state;
+    const selected_category = categories[selected_category_id]
     return (
       <React.Fragment>
         <div className="profile-box">
           <div className="profile-rhs">
-            {profile_items.map((item, idx) => {
-              // const {item_type, title, displayName, options} = field;
-              const {profile_item_data_id, profile_item_category_id} = item;
-              const { item_type, title } = categories[profile_item_category_id]
-              const data = item_data[profile_item_data_id]
-              const options = item.options || []
-
-              if (item_type == "multi") {
-                return <div className="box" key={idx}>
-                    <span>{title}:&nbsp;</span>
-                    {this.props.editing && data.value ?
-                      <span>
-                        <select
-                          value={data.value}
-                          onChange={(e) => this.updateOption(item, idx, e.target.value, e.target)}>
-                          {options.map((option) =>
-                              <option key={option.id} id={option.id} value={option.value}>{option.value}</option>
-                            )
-                          }
-                        </select>
-                        <PrivacyGroupSelector item={item} privacy_groups={privacy_groups} />
-                      </span> :
-                    <span>{data.value || ""}</span>}
-                  </div>;
-              } else if (item_type == "text") {
-                return <div className="box" key={idx}>
-                    <span>{title}:&nbsp;</span>
-                    {this.props.editing ?
-                      <span>
-                        <input
-                          value={data.value || ""}
-                          onChange={(e) => this.updateText(item.id, profile_item_data_id, e.target.value)}/> 
-                        <PrivacyGroupSelector item={item} privacy_groups={privacy_groups} />
-                      </span> :
-                    <span>{data.value || "??"}</span>}
-                  </div>;
-              } else {
-                return <p>Error: you tried to render a field with invalid type: {item_type}</p>;
-              }
-            })}
+            {profile_items.map((item, idx) => this.render_item(item, idx))}
+            <NewProfileItem categories={categories} />
           </div>
         </div>
       </React.Fragment>
@@ -152,38 +261,25 @@ class Profile extends React.Component {
   updateOption (item, item_index, newValue, target) {
     var index = target.selectedIndex;
     var optionElement = target.childNodes[index]
+    console.log(optionElement)
+    console.log(newValue)
     var option_id =  Number.parseInt(optionElement.getAttribute('id'));
 
     let profileItems = this.state.profile_items
     let itemData = {...this.state.item_data};
-    itemData[option_id] = item.options.find((option) => option_id === option.id);
+    console.log(itemData, option_id, item)
+    const {categories} = this.state;
+    itemData[option_id] = categories[item.profile_item_category_id].options.find((option) => option_id === option.id);
     profileItems[item_index].profile_item_data_id = option_id;
     this.setState({ item_data: itemData, profile_items: profileItems});
 
-    sendOptionValueUpdate(item.id, option_id);
+    sendOptionValueUpdate(item.id, option_id);      
   }
 
-  getOptions (profile_item, index) {
-    if (this.state.categories[profile_item.profile_item_category_id].item_type !== "multi") return;
-    // TODO: should this be changed to an api path?
-    return fetch("/api/profile_item_categories/" + profile_item.profile_item_category_id + "/options", {
-        method: "GET", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    .then((response) => { return response.json()})
-    .then((json) => {
-      // console.log(json)
-      this.updateOptions(index, profile_item, json.options)
-    })
-  }
-
-  updateOptions (index, profile_item, options) {
-    let profileItems = this.state.profile_items
-    profileItems[index].options = options;
-    this.setState({ profile_items: profileItems});
-    // this.forceUpdate();
+  updateOptions (id, options) {
+    const {categories} = this.state
+    categories[id].options = options;
+    this.setState({ categories: categories});
   }
 
 }
@@ -192,6 +288,22 @@ class Profile extends React.Component {
 //   greeting: PropTypes.string
 // };
 export default Profile;
+
+function newProfileItem (profile_item_category_id, data_id) {
+    return fetch("/profile_items", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          profile_item_category_id: profile_item_category_id,
+          profile_item_data_id: data_id
+        })
+    })
+    // .then((response) => {console.log(response.json())});
+}
+
+
 
 function sendOptionValueUpdate (profile_item_id, data_id) {
     return fetch("/profile_items/" + profile_item_id, {
