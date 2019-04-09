@@ -5,7 +5,7 @@ class ProfileItemsController < ApplicationController
   # GET /profile_items
   # GET /profile_items.json
   def index
-    @profile_items = ProfileItem.all
+    @profile_items = current_user.profile_items
   end
 
   # GET /profile_items/1
