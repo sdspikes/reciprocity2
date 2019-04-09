@@ -75,6 +75,10 @@ FB_APP_ID=<your_app_id>
 FB_APP_SECRET=<your_app_secret>
 TEST_FB_APP_ID=<your_test_app_id>
 TEST_FB_APP_SECRET=<your_test_app_secret>
+# If you want to send real emails, set up your Mailgun API key and domain
+# You can either create your own account with Mailgun or get the real values from Stardust
+MAILGUN_API_KEY=<your_api_key>
+MAILGUN_DOMAIN=<your_mailgun_domain>
 ```
 
 ### Deploy to Heroku
@@ -85,6 +89,8 @@ heroku create
 git push heroku master
 heroku config:set FB_APP_ID=<your_app_id>
 heroku config:set FB_APP_SECRET=<your_app_secret>
+heroku config:set MAILGUN_API_KEY=<your_api_key>
+heroku config:set MAILGUN_DOMAIN=<your_mailgun_domain>
 ```
 
 You'll also need to set up the production database
