@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :categories
   resources :checks, only: [:create, :index]
+  post "api/profiles/text_profile_item", to: "profile_items#create_text_profile_item", as: "create_text_profile_item"
   get "api/profile_item_categories/:id/options", to: "profile_item_categories#get_options", as: "get_options"
   put "api/profiles/update_item", to: "profiles#update_item", as: "update_item"
   put "api/checks/new", to: "checks#create_check", as: "create_check", defaults: { format: 'json' }
