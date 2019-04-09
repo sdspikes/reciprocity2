@@ -81,7 +81,7 @@ class NewProfileItem extends React.Component {
       new_item.profile_item_data_id = json_response.id
       new_item.profile_item_data_type = category_type_to_item_type[item_type]
 
-      resetState()
+      this.resetState()
 
       newProfileItem(new_item, (newItem) =>
         this.props.callback(newItem, json_response))
@@ -97,7 +97,7 @@ class NewProfileItem extends React.Component {
     new_item.profile_item_data_id = option_id
     new_item.profile_item_data_type = category_type_to_item_type[item_type]
 
-    resetState()
+    this.resetState()
 
     newProfileItem(new_item, (newItem) =>
         this.props.callback(newItem, options.find(o => o.id === option_id), options))
