@@ -9,7 +9,7 @@ class ChecksController < ApplicationController
     @current_user = current_user
     if (@current_user)
       @checks = Check.all
-      @users = User.where.not(id: current_user.id)
+      @users = User.get_relevant_users(current_user.id)
       @activities = Activity.all
       @users_to_activities = @current_user.get_checks_table
     end
