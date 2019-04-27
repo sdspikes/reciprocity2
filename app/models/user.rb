@@ -6,14 +6,15 @@ class User < ApplicationRecord
 
   devise :omniauthable, :omniauth_providers => [:facebook]
 
-  has_many :outgoing, foreign_key: "checker_id", class_name: 'Check'
-  has_many :incoming, foreign_key: "checked_id", class_name: 'Check'
+  has_many :outgoing, foreign_key: "checker_id", class_name: 'Check', :dependent => :destroy
+  has_many :incoming, foreign_key: "checked_id", class_name: 'Check', :dependent => :destroy
   has_many :outgoing_checked, class_name: "User", through: :outgoing
   has_many :incoming_checked, class_name: "User", through: :incoming
-  has_many :privacy_groups, foreign_key: "owner_id"
-  has_many :profile_items
+  has_many :privacy_groups, foreign_key: "owner_id", :dependent => :destroy
+  has_many :profile_items, :dependent => :destroy
   has_many :profile_item_responses, through: :profile_items, source: :profile_item_data, source_type: 'ProfileItemResponse'
-  has_many :text_profile_items, through: :profile_items, source: :profile_item_data, source_type: 'TextProfileItem'
+  has_many :text_profile_items, through: :profile_items, source: :profile_item_data, source_type: 'TextProfileItem', :dependent => :destroy
+  has_many :privacy_group_members, dependent: :destroy
 
   def get_checks_table
     users_to_activities = Hash[ User.all.collect do |u|

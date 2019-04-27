@@ -1,6 +1,6 @@
 class PrivacyGroup < ApplicationRecord
   belongs_to :owner, class_name: 'User'
-  has_many :profile_items
+  has_many :profile_items, dependent: :destroy
   has_many :privacy_group_members, dependent: :destroy
 
   def self.create_facebook_group(token)
@@ -9,6 +9,7 @@ class PrivacyGroup < ApplicationRecord
       @privacy_group = PrivacyGroup.find_by(name: "Facebook Friends", owner_id: current_user.id)
     end
     @privacy_group ||= PrivacyGroup.create(name: "Facebook Friends", owner_id: current_user.id)
+
     friend_list = Facebook.get_connections(current_user.facebook_token, "me", "friends").map {|node| node["id"]}
     friend_list.each do |friend|
       user = User.find_by(uid: friend)
