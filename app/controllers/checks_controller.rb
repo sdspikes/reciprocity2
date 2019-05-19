@@ -9,7 +9,7 @@ class ChecksController < ApplicationController
     @current_user = current_user
     if (@current_user)
       @checks = Check.all
-      @users = User.where.not(id: current_user.id)
+      @users = User.get_relevant_users(current_user.id)
       @activities = Activity.all
       @users_to_activities = @current_user.get_checks_table
     end
@@ -61,7 +61,10 @@ class ChecksController < ApplicationController
     respond_to do |format|
       if @check.save
         reciprocated = Check.find_by(activity_id: new_check_params[:activity_id], checked_id: current_user.id, checker_id: new_check_params[:checked_id])
-        # TODO: if reciprocated, fire email notification to both
+        if reciprocated
+          UserMailer.with(user: @check.checker, user2: @check.checked, activity: @check.activity).match_email.deliver_now
+          UserMailer.with(user: @check.checked, user2: @check.checker, activity: @check.activity).match_email.deliver_now
+        end
         format.json  { render :json => {:check_id => @check.id, reciprocated: !!reciprocated} }
       else
         format.json  { render :json => @check.errors }

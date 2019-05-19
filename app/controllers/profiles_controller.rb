@@ -21,6 +21,9 @@ class ProfilesController < ApplicationController
     @item_data = @profile_items.map{|item| item.profile_item_data }
     @categories = ProfileItemCategory.all
 #     TODO(sdspkes): hide basic items if not filled in or not allowed due to privacy
+    if (current_user == @profile_user)
+      @privacy_groups = current_user.privacy_groups
+    end
     @basic_profile_items = {
       age: @profile_user.age,
       bio: @profile_user.bio,

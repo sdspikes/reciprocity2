@@ -12,7 +12,7 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Preferences.io</a>
+      <%= link_to 'Reciprocity.io', checks_path, class:"navbar-brand" %>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -21,10 +21,9 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <% if user_signed_in? %>
-            <li class="nav-item active nav-link"><%= link_to current_user[:name], checks_path %></li>
-            <li class="nav-item active nav-link"><%= link_to('My Account', edit_user_registration_path) %></li>
-            <li class="nav-item active nav-link"><%= link_to('My Profile', profile_path(current_user.id)) %></li>
+            <li class="nav-item active nav-link"><%= link_to current_user[:name], profile_path(current_user.id) %></li>
             <li class="nav-item active nav-link"><%= link_to('Manage Privacy', privacy_groups_path) %></li>
+            <li class="nav-item active nav-link"><%= link_to('My Account', edit_user_registration_path) %></li>
             <li class="nav-item nav-link"><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
           <% else %>
             <li class="nav-item active nav-link"><%= link_to('Sign in', new_user_session_path) %></li>

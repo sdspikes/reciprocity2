@@ -5,7 +5,7 @@ class ProfileItemsController < ApplicationController
   # GET /profile_items
   # GET /profile_items.json
   def index
-    @profile_items = ProfileItem.all
+    @profile_items = current_user.profile_items
   end
 
   # GET /profile_items/1
@@ -22,17 +22,30 @@ class ProfileItemsController < ApplicationController
   def edit
   end
 
+  def create_text_profile_item
+    data = profile_item_params[:profile_item_data_attributes][:value]
+    text_item = TextProfileItem.new(value: data)
+
+    if text_item.save
+      render json: text_item
+    else
+      render json: text_item.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /profile_items
   # POST /profile_items.json
   def create
-    @profile_item = ProfileItem.new(profile_item_params)
+    params = profile_item_params.to_h
+    params[:user_id] = current_user.id
+    @profile_item = ProfileItem.new(params)
 
     respond_to do |format|
       if @profile_item.save
-        format.html { redirect_to @profile_item, notice: 'Profile item was successfully created.' }
-        format.json { render :show, status: :created, location: @profile_item }
+        # format.html { redirect_to @profile_item, notice: 'Profile item was successfully created.' }
+        format.json { render json: @profile_item }
       else
-        format.html { render :new }
+        # format.html { render :new }
         format.json { render json: @profile_item.errors, status: :unprocessable_entity }
       end
     end
@@ -58,7 +71,7 @@ class ProfileItemsController < ApplicationController
   def destroy
     @profile_item.destroy
     respond_to do |format|
-      format.html { redirect_to profile_items_url, notice: 'Profile item was successfully destroyed.' }
+      # format.html { redirect_to profile_items_url, notice: 'Profile item was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -73,9 +86,10 @@ class ProfileItemsController < ApplicationController
     def profile_item_params
       params.require(:profile_item).permit(
         :user_id,
-        :profile_item_category,
+        :profile_item_category_id,
         :privacy_group_id,
         :profile_item_data_id,
+        :profile_item_data_type,
         profile_item_data_attributes: [:id, :value])
     end
 end

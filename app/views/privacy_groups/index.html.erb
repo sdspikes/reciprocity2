@@ -3,20 +3,11 @@
 <h1>Privacy Groups</h1>
 
 <table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
   <tbody>
     <% @privacy_groups.each do |privacy_group| %>
       <tr>
-        <td><%= privacy_group.name %></td>
-        <td><%= link_to 'Show', privacy_group %></td>
-        <td><%= link_to 'Edit', edit_privacy_group_path(privacy_group) %></td>
-        <td><%= link_to 'Destroy', privacy_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><b><%= link_to privacy_group.name, privacy_group %></b></td>
+        <td><%= link_to 'delete', privacy_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

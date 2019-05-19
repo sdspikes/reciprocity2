@@ -12,3 +12,10 @@ console.log('Hello World from Webpacker')
 var componentRequireContext = require.context("components", true)
 var ReactRailsUJS = require("react_ujs")
 ReactRailsUJS.useContext(componentRequireContext)
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faTrash)
+library.add(faPlus)
