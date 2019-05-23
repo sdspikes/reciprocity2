@@ -30,6 +30,8 @@ class PrivacyGroupsController < ApplicationController
     respond_to do |format|
       if @privacy_group
         format.html { redirect_to privacy_groups_url, notice: 'Privacy group was successfully created.' }
+      else
+        format.html { redirect_to privacy_groups_url, notice: 'Privacy group was not created.' }
       end
     end
   end
