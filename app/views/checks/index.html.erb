@@ -3,6 +3,13 @@
 <h1>Reciprocity</h1>
 
 <% if !current_user %>
+  Hello!  This is an alpha testing version of Reciprocity 2.0.
+
+  There are some known issues, but the main thing you should be aware of is that if you create an account, anyone else who creates an account will be able to see your name on the front page, whether or not you're connected (because creating connections hasn't yet been implemented and the alternative is no one being able to see you!).
+
+
+  If you come across a bug, check <a href="https://docs.google.com/document/d/13miL_j8WlWRfbQ0FNo3SKhHRYQm8dTUBJYjU7xV5IR4/edit#heading=h.rmvdkob5bbrz">this doc</a> and <a href="https://github.com/sdspikes/reciprocity2/issues">the issues on the GitHub repo</a>, and if you don't see your issue there, add it in whichever place is more comfortable for you!<br><br>
+
   Please <%= link_to('Sign in', new_user_session_path) %> or <%= link_to('Register', new_user_registration_path) %>!
 <% else %>
   <%= react_component("Checks", { activities: @activities, users_to_activities: @users_to_activities, users: @users }) %>
