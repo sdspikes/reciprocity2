@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :profile_item_categories
   resources :privacy_group_members
   resources :privacy_groups
+  get 'facebook', to: 'privacy_groups#facebook', as: "facebook"
   resources :seekings
   # get 'compatibilities/unrated', :to => 'compatibilities#unrated_index'
   # get 'compatibilities/rated', :to => 'compatibilities#rated_index'
