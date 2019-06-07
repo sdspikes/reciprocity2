@@ -49,7 +49,7 @@ Run locally with
 (see the following link for how to set up self-signed certificates: 
 https://www.devmynd.com/blog/rails-local-development-https-using-self-signed-ssl-certificate/)
 
-### Authenicating using Facebook
+### Authenticating using Facebook
 
 If you want to be able to log in locally using Facebook, create a new facebook app by going [here](https://developers.facebook.com/)
 
