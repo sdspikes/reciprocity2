@@ -15,6 +15,16 @@ class User < ApplicationRecord
   has_many :profile_item_responses, through: :profile_items, source: :profile_item_data, source_type: 'ProfileItemResponse'
   has_many :text_profile_items, through: :profile_items, source: :profile_item_data, source_type: 'TextProfileItem', :dependent => :destroy
   has_many :privacy_group_members, dependent: :destroy
+  belongs_to :default_privacy_setting, class_name: :privacy_setting,polymorphic: true, foreign_key: 'default_privacy_setting_id'
+
+  before_create :set_default_privacy_setting
+
+  def set_default_privacy_setting
+    if (!default_privacy_setting)
+      self.default_privacy_setting = PrivacyPreset.find_by(name: "Only Me")
+      self.save
+    end
+  end
 
   def get_checks_table
     users_to_activities = Hash[ User.all.collect do |u|

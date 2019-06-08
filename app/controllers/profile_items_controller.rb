@@ -38,6 +38,10 @@ class ProfileItemsController < ApplicationController
   def create
     params = profile_item_params.to_h
     params[:user_id] = current_user.id
+    # sets default if one's not already set
+    current_user.set_default_privacy_setting
+    params[:privacy_setting] = current_user.default_privacy_setting
+
     @profile_item = ProfileItem.new(params)
 
     respond_to do |format|
@@ -87,7 +91,8 @@ class ProfileItemsController < ApplicationController
       params.require(:profile_item).permit(
         :user_id,
         :profile_item_category_id,
-        :privacy_group_id,
+        :privacy_setting_type,
+        :privacy_setting_id,
         :profile_item_data_id,
         :profile_item_data_type,
         profile_item_data_attributes: [:id, :value])

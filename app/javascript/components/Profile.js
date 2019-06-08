@@ -34,14 +34,13 @@ class Profile extends React.Component {
     const categories = props.profile.categories;
 
     var category_hash = hashify(categories)
-    var item_data_hash = hashify(item_data)
 
     this.state = {
       values: props.profile.values,
       profile_items: profile_items,
-      item_data: item_data_hash,
+      item_data: hashify(item_data),
       categories: category_hash,
-      privacy_groups: hashify(props.profile.privacy_groups)
+      privacy_settings: hashify(props.profile.privacy_settings)
     };
 
     // grab options from backend for multi items
@@ -54,7 +53,7 @@ class Profile extends React.Component {
   }
 
   render () {
-    const { profile_items, item_data, categories, privacy_groups } = this.state;
+    const { profile_items, item_data, categories, privacy_settings } = this.state;
 
     return (
       <React.Fragment>
@@ -85,7 +84,7 @@ class Profile extends React.Component {
                       <input
                         value={data.value || ""}
                         onChange={(e) => this.updateText(item.id, profile_item_data_id, e.target.value)}/>}
-                    <PrivacyGroupSelector item={item} privacy_groups={privacy_groups} />
+                    <PrivacyGroupSelector item={item} privacy_settings={privacy_settings} />
                     <button onClick={(e) => this.deleteItem(item, idx)}>
                       Delete
                     </button>
