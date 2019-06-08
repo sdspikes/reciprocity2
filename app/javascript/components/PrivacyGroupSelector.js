@@ -11,7 +11,7 @@ function sendPrivacyGroupUpdate (profile_item_id, privacy_setting_id, privacy_se
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({privacy_setting_id, privacy_setting_type})
+        body: JSON.stringify({profile_item: {privacy_setting_id, privacy_setting_type}})
     })
     // .then((response) => {console.log(response.json())});
 }
