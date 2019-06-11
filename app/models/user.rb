@@ -15,9 +15,9 @@ class User < ApplicationRecord
   has_many :profile_item_responses, through: :profile_items, source: :profile_item_data, source_type: 'ProfileItemResponse'
   has_many :text_profile_items, through: :profile_items, source: :profile_item_data, source_type: 'TextProfileItem', :dependent => :destroy
   has_many :privacy_group_members, dependent: :destroy
-  belongs_to :default_privacy_setting, class_name: :privacy_setting,polymorphic: true, foreign_key: 'default_privacy_setting_id'
+  belongs_to :default_privacy_setting, class_name: :privacy_setting,polymorphic: true, foreign_key: 'default_privacy_setting_id', optional: true
 
-  before_create :set_default_privacy_setting
+  after_create :set_default_privacy_setting
 
   def set_default_privacy_setting
     if (!default_privacy_setting)
