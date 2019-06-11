@@ -58,9 +58,17 @@ def create_bios
 	end
 end
 
-destroy_all
-reset_users
-reset_activities
-create_profile_item_categories
-create_genders
-create_bios
+def set_up_privacy_presets
+	preset_groups = ['Only Me', 'All Connections', 'Public']
+	preset_groups.each do |name|
+		PrivacyPreset.create(name: name)
+	end
+end
+
+# destroy_all
+# reset_users
+# reset_activities
+# create_profile_item_categories
+# create_genders
+# create_bios
+set_up_privacy_presets
