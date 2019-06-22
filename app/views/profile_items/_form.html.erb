@@ -1,7 +1,10 @@
 <% @title = profile_item.profile_item_category.title if profile_item.profile_item_category %>
 Type: <%= @title ? @title : collection_select(:profile_item_category, :profile_item_category_id, ProfileItemCategory.all, :id, :title) %>
 
-<% group = profile_item.privacy_group ? profile_item.privacy_group.name : " " %>
+# When you use polymorphism with ActiveRecord, you access the parent of a record by calling on
+# the name assigned with polymorphic: true. privacy_setting therefore gets the privacy group to which
+# the profile item belongs.
+<% group = profile_item.privacy_setting ? profile_item.privacy_setting.name : " " %>
 <% profile_item_data = profile_item.profile_item_data %>
 <%= form_with(model: profile_item, remote: true, id: "edit_profile_item_form") do |form| %>
   <% #So I've tried a ton of stuff here - format.js in edit and update controllers, remote true in a variety of places, changing the edit.html.erb to
