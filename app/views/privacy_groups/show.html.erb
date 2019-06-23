@@ -2,6 +2,13 @@
 
 <h1><%= @privacy_group.name %></h1>
 
-<%= react_component("PrivacyGroup", { privacy_group: @privacy_group, members: @members, member_users: @member_users, eligible_users: @eligible_users }) %>
+<% if (@current_user && @privacy_group.owner_id == @current_user.id) %>
+
+  <%= react_component("PrivacyGroup", { privacy_group: @privacy_group, members: @members, member_users: @member_users, eligible_users: @eligible_users }) %>
+<% else %>
+  This is not your privacy group!
+  <br>
+  <br>
+<% end %>
 
 <%= link_to 'Back', privacy_groups_path %>
