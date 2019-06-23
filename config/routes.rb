@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :profile_items
+  resources :profile_items, only: [:create, :update, :destroy]
   resources :profile_item_categories
   resources :privacy_group_members
   resources :privacy_groups
