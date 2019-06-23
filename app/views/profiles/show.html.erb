@@ -6,18 +6,4 @@
 </h2>
 
 <%= react_component("Profile", { profile: { values: @basic_profile_items, profile_items: @profile_items, item_data: @item_data, categories: @categories, privacy_settings: @privacy_settings }, editing: current_user == @profile_user }) %>
-<!--
-<% @profile_items.each do |profile_item| %>
-<div>
-	<p>
-		<%= render partial: "profile_item_show", locals: {profile_item: profile_item} %>
-	</p>
-	<% if @profile_user == current_user %>
-		<%= link_to "Edit", edit_profile_item_path(profile_item.id) %>
-	<% end %>
 
-</div>
-<% end %>
-<%= link_to "New Profile Item", new_profile_item_path %>
-
- -->
