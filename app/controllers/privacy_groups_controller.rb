@@ -5,6 +5,7 @@ class PrivacyGroupsController < ApplicationController
   # GET /privacy_groups.json
   def index
     @privacy_groups = current_user.privacy_groups
+    @show_fb_import = current_user.facebook_token && !@privacy_groups.find{|group| group.name == "Facebook Friends"}
   end
 
   # GET /privacy_groups/1
@@ -27,7 +28,9 @@ class PrivacyGroupsController < ApplicationController
   # Also this code is still buggy - I need to figure out why if you delete the facebook friends then try to recreate them, ActiveRecord chokes
   # MAybe it has to do with not being RESTful
   def facebook
-    @privacy_group = PrivacyGroup.create_facebook_group(current_user.facebook_token)
+    if (current_user && current_user.facebook_token)
+      @privacy_group = PrivacyGroup.create_facebook_group(current_user.facebook_token)
+    end
     respond_to do |format|
       if @privacy_group
         format.html { redirect_to privacy_groups_url, notice: 'Privacy group was successfully created.' }
