@@ -1,0 +1,16 @@
+When you log into reciprocity.io or interact with the app you should assume
+that we store everything you do. If you authenticate with external apps like Facebook, we use their APIs to get relevant info like your
+photo, email address, and list of friends who use reciprocity.  The data is
+used to implement the app (e.g. to send notifications to you and to people
+with whom you match) and to calculate anonymized statistics like total number
+of users and total number of matches.  If you destroy your account we will try
+to immediately remove all of the interesting data about you, but we won't be
+able to remove you from all of the log files etc.; for all we know that stuff
+will stick around indefinitely.
+
+All of that data is stored unencrypted in our database (except for passwords which are hashed), so we could look at it
+if we wanted to (as of July 1, 2019 only Stardust has credentials to access the database or deploy code to reciprocity.io. This policy will be updated if/when that changes). We promise not to look at your data without specific permission (e.g. if you report a bug, we may ask for permission to look at your data to help with debugging).  We try to be
+basically sensible about security, but probably a sufficiently determined
+attacker could somehow get the data.
+
+We use cookies to keep track of the fact that you are logged in.
