@@ -4,7 +4,16 @@ class ConnectionsController < ApplicationController
   # GET /connections
   # GET /connections.json
   def index
-    @connections = Connection.all
+    @connection_tokens = current_user.connection_tokens
+    @connection_people = current_user.connection_people
+    p current_user.requesters
+    @request_people = current_user.requesters
+  end
+
+  def token
+    respond_to do |format|
+      format.html { redirect_to connections_path, notice: 'hi.' }
+    end
   end
 
   # GET /connections/1

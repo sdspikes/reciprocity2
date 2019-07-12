@@ -2,26 +2,8 @@
 
 <h1>Connections</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @connections.each do |connection| %>
-      <tr>
-        <td><%= connection.user %></td>
-        <td><%= link_to 'Show', connection %></td>
-        <td><%= link_to 'Edit', edit_connection_path(connection) %></td>
-        <td><%= link_to 'Destroy', connection, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Connection', new_connection_path %>
+  <%= react_component("Connection", {
+    connection_tokens: @connection_tokens,
+    connection_people: @connection_people,
+    request_people: @request_people,
+  }) %>

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :profile_items, only: [:create, :update, :destroy]
   resources :profile_item_categories
-  resources :privacy_group_members
+  resources :privacy_group_members, only: [:create, :update, :destroy]
   resources :privacy_groups
   get 'facebook', to: 'privacy_groups#facebook', as: "facebook"
   resources :seekings
@@ -24,6 +24,11 @@ Rails.application.routes.draw do
   delete "api/checks/delete", to: "checks#destroy_check", as: "destroy_check"
   put "api/privacy_group_member/new", to: "privacy_group_members#create_member", as: "create_member", defaults: { format: 'json' }
   delete "api/privacy_group_member/delete", to: "privacy_group_members#destroy_member", as: "destroy_member"
+
+
+  resources :connection_tokens
+  # get "connection_token/:token", to: "connections#token", as: "connection_token_thing"
+
   resources :profiles
 
   resources :text_profile_item

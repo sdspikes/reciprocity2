@@ -1,0 +1,13 @@
+<p>
+  <%= form_with(model: connection_request, local: true) do |form| %>
+    <div class="actions">
+    <%= form.submit %>
+  </div>
+
+  <% end %>
+
+  <%= link_to 'Request connection', new_connection_request_path(@connection_token.token)  %> with 
+  <%= link_to '#{user.name}', profile_path(@connection_token.user.id) %>
+</p>
+
+

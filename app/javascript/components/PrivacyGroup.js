@@ -2,10 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Row, Col } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-function hashify(arr) {
-    return arr.reduce((h, item) => { h[item.user_id] = item; return h; }, {})
-}
+import Helpers from "./Helpers"
 
 class PrivacyGroup extends React.Component {
   constructor (props) {
@@ -13,7 +10,7 @@ class PrivacyGroup extends React.Component {
 
     this.state = {
       privacy_group: props.privacy_group,
-      members: hashify(props.members),
+      members: Helpers.hashify(props.members),
       non_member_users: props.eligible_users,
       member_users: props.member_users
     };

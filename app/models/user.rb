@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :incoming, foreign_key: "checked_id", class_name: 'Check', :dependent => :destroy
   has_many :outgoing_checked, class_name: "User", through: :outgoing
   has_many :incoming_checked, class_name: "User", through: :incoming
+
   has_many :privacy_groups, foreign_key: "owner_id", :dependent => :destroy
   has_many :profile_items, :dependent => :destroy
   has_many :profile_item_responses, through: :profile_items, source: :profile_item_data, source_type: 'ProfileItemResponse'
@@ -17,7 +18,31 @@ class User < ApplicationRecord
   has_many :privacy_group_members, dependent: :destroy
   belongs_to :default_privacy_setting, class_name: :privacy_setting,polymorphic: true, foreign_key: 'default_privacy_setting_id', optional: true
 
+  has_many :connection_tokens
+
+
+  has_many :incoming_connection_requests, class_name: 'ConnectionRequest', foreign_key: :requestee_id
+  has_many :requesters, through: :incoming_connection_requests
+
+  has_many :outgoinging_connection_requests, class_name: 'ConnectionRequest', foreign_key: :requestee_id
+  has_many :requestees, through: :outgoinging_connection_requests
+
+
+  has_many :outgoing_connections, class_name: 'Connection', foreign_key: :requester_id
+  has_many :connectees, through: :outgoing_connections
+
+  has_many :incoming_connections, class_name: 'Connection', foreign_key: :requestee_id
+  has_many :connecters, through: :incoming_connections
+
   after_create :set_default_privacy_setting
+
+  def connections
+    outgoing_connections + incoming_connections
+  end
+
+  def connection_people
+    connecters + connectees
+  end
 
   def set_default_privacy_setting
     if (!default_privacy_setting)
