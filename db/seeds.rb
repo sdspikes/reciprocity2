@@ -28,9 +28,11 @@ end
 def reset_activities
 	Activity.destroy_all
 	Activity.create([
+		{title: 'networking', description: 'talk about careers'},
 		{title: 'chat online', description: 'get to know each other online'},
 		{title: 'hang out', description: 'hang out in person'},
 		{title: 'date', description: 'go out on a date in person'},
+		{title: 'networking', description: 'talk about careers'}
 	])
 end
 
@@ -41,6 +43,9 @@ def create_profile_item_categories
 	ProfileItemCategory.create(title: "bio", description: "short description", item_type: "text")
 	ProfileItemCategory.create(title: "looking for", description: "what genders you are open to dating", item_type: "text")
 	ProfileItemCategory.create(title: "want kids", description: "whether you are interested in having kids", item_type: "multi")
+	ProfileItemCategory.create(title: "gender description", description: "more detail about how you identify", item_type: "text")
+	ProfileItemCategory.create(title: "location", description: "where you live", item_type: "text")
+	ProfileItemCategory.create(title: "travel locations", description: "places you go or are willing to go semi-regularly", item_type: "text")
 end
 
 
@@ -65,10 +70,10 @@ def set_up_privacy_presets
 	end
 end
 
-# destroy_all
-# reset_users
-# reset_activities
-# create_profile_item_categories
-# create_genders
-# create_bios
+destroy_all
+reset_users
+reset_activities
+create_profile_item_categories
+create_genders
+create_bios
 set_up_privacy_presets
