@@ -93,7 +93,7 @@ class Checks extends React.Component {
     const terms = this.state.search.split(" ")
     var remaining = [...users]
     terms.forEach((term, i) => {
-      remaining = remaining.filter(user => (user.name.search(term) != -1) || (user.email.search(term) != -1))
+      remaining = remaining.filter(user => (user.name.toLowerCase().search(term.toLowerCase()) != -1))
     })
     return remaining
   }
@@ -104,20 +104,16 @@ class Checks extends React.Component {
 
     return (
       <React.Fragment>
+        <TextField
+          id="search"
+          label="Filter by name"
+          type="search"
+          className={classes.textField}
+          margin="normal"
+          onChange={this.handleSearchChange}
+        />
         <table>
           <tbody>
-            <tr>
-
-              <TextField
-                id="search"
-                label="Search names & email"
-                type="search"
-                className={classes.textField}
-                margin="normal"
-                onChange={this.handleSearchChange}
-              />
-
-            </tr>
             <tr>
               <th>name</th>
               {activities.map((x, idx) => <th key={idx}>{x.title}</th>)}
