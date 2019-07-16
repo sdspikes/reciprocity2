@@ -6,8 +6,8 @@ class ConnectionsController < ApplicationController
   def index
     @connection_tokens = current_user.connection_tokens
     @connection_people = current_user.connection_people
-    p current_user.requesters
     @request_people = current_user.requesters
+    @incoming_requests = current_user.incoming_connection_requests
   end
 
   def token

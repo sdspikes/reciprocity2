@@ -1,13 +1,21 @@
 <p>
-  <%= form_with(model: connection_request, local: true) do |form| %>
-    <div class="actions">
-    <%= form.submit %>
-  </div>
 
+  <% if current_user == @connection_token.user %>
+    This is your own link.  Copy it and post it or send it to specific people!
+  <% else %>
+    You've reached 
+    <%= link_to "#{@connection_token.user.name}", profile_path(@connection_token.user.id) %>'s connection link.
+
+    <%= form_for(@connection_request, as: :connection_request, :url => '/connection_requests') do |form| %>
+      <%= form.hidden_field :requester_id, value: current_user.id %>
+      <%= form.hidden_field :requestee_id, value: @connection_token.user.id %>
+      <%= form.hidden_field :source_id, value: @connection_token.id %>
+      <%= form.hidden_field :source_type, value: "ConnectionToken" %>
+      <%= form.submit %>
+    <% end %>
   <% end %>
 
-  <%= link_to 'Request connection', new_connection_request_path(@connection_token.token)  %> with 
-  <%= link_to '#{user.name}', profile_path(@connection_token.user.id) %>
+
 </p>
 
 

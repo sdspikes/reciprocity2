@@ -28,7 +28,7 @@ class ConnectionRequestsController < ApplicationController
 
     respond_to do |format|
       if @connection_request.save
-        format.html { redirect_to @connection_request, notice: 'Connection request was successfully created.' }
+        format.html { redirect_to connections_path, notice: 'Connection request was successfully created.' }
         format.json { render :show, status: :created, location: @connection_request }
       else
         format.html { render :new }
@@ -69,6 +69,6 @@ class ConnectionRequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def connection_request_params
-      params.require(:connection_request).permit(:requester_id, :requestee_id)
+      params.require(:connection_request).permit(:requester_id, :requestee_id, :source)
     end
 end

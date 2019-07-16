@@ -1,5 +1,6 @@
 class ConnectionTokensController < ApplicationController
   before_action :set_connection_token, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token
 
   # GET /connection_tokens
   # GET /connection_tokens.json
@@ -11,6 +12,7 @@ class ConnectionTokensController < ApplicationController
   # GET /connection_tokens/1.json
   def show
     @connection_token 
+    @connection_request = ConnectionToken.new
   end
 
   # # GET /connection_tokens/new
@@ -25,17 +27,18 @@ class ConnectionTokensController < ApplicationController
 
   # POST /connection_tokens
   # POST /connection_tokens.json
-  def new
-    @connection_token = ConnectionToken.new({user: current_user})
+  def create
+    @connection_token_params = params[:connection_token]
+
+    @connection_token = ConnectionToken.new({user: current_user, name: @connection_token_params[:name]})
 
     respond_to do |format|
       if @connection_token.save
-        format.html { redirect_to connections_path, notice: 'Connection was successfully created.' }
-        # format.json { render :show, status: :created, location: @connection_token }
+        # format.html { redirect_to connections_path, notice: 'Connection was successfully created.' }
+        format.json { render json: @connection_token }
       else
-        format.html { redirect_to connections_path, notice: 'failed.' }
-        # format.html { render :new }
-        # format.json { render json: @connection_token.errors, status: :unprocessable_entity }
+        # format.html { redirect_to connections_path, notice: 'failed.' }
+        format.json { render json: @connection_token.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -59,21 +62,19 @@ class ConnectionTokensController < ApplicationController
   def destroy
     @connection_token.destroy
     respond_to do |format|
-      format.html { redirect_to connections_path, notice: 'Connection was successfully destroyed.' }
-      format.json { head :no_content }
+      # format.html { redirect_to connections_path, notice: 'Connection was successfully destroyed.' }
+      format.json { render json: @connection_token }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_connection_token
-      p "*"*100
-      p params[:id]
       @connection_token = ConnectionToken.find_by(token: params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def connection_token_params
-      params.require(:connection_token).permit(:token)
+      params.require(:connection_token).permit(:token, :name)
     end
 end
