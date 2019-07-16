@@ -93,7 +93,7 @@ class Checks extends React.Component {
     const terms = this.state.search.split(" ")
     var remaining = [...users]
     terms.forEach((term, i) => {
-      remaining = remaining.filter(user => (user.name.toLowerCase().search(term.toLowerCase()) != -1))
+      remaining = remaining.filter(user => (user.name.toLowerCase().search(term.toLowerCase()) != -1 || user.email.toLowerCase() == term.toLowerCase()))
     })
     return remaining
   }
@@ -106,7 +106,7 @@ class Checks extends React.Component {
       <React.Fragment>
         <TextField
           id="search"
-          label="Filter by name"
+          label="Filter by name or full email address"
           type="search"
           className={classes.textField}
           margin="normal"
