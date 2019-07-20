@@ -24,7 +24,7 @@ class User < ApplicationRecord
   has_many :incoming_connection_requests, class_name: 'ConnectionRequest', foreign_key: :requestee_id
   has_many :requesters, through: :incoming_connection_requests
 
-  has_many :outgoinging_connection_requests, class_name: 'ConnectionRequest', foreign_key: :requestee_id
+  has_many :outgoinging_connection_requests, class_name: 'ConnectionRequest', foreign_key: :requester_id
   has_many :requestees, through: :outgoinging_connection_requests
 
 

@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 2019_07_16_034709) do
     t.datetime "updated_at", null: false
     t.bigint "source_id"
     t.string "source_type"
+    t.boolean "ignored", default: false
+    t.index ["requestee_id", "requester_id"], name: "index_connection_requests_on_requestee_id_and_requester_id", unique: true
     t.index ["requestee_id"], name: "index_connection_requests_on_requestee_id"
     t.index ["requester_id", "requestee_id"], name: "index_connection_requests_on_requester_id_and_requestee_id", unique: true
     t.index ["requester_id"], name: "index_connection_requests_on_requester_id"
@@ -84,6 +86,7 @@ ActiveRecord::Schema.define(version: 2019_07_16_034709) do
     t.datetime "updated_at", null: false
     t.bigint "source_id"
     t.string "source_type"
+    t.index ["requestee_id", "requester_id"], name: "index_connections_on_requestee_id_and_requester_id", unique: true
     t.index ["requestee_id"], name: "index_connections_on_requestee_id"
     t.index ["requester_id", "requestee_id"], name: "index_connections_on_requester_id_and_requestee_id", unique: true
     t.index ["requester_id"], name: "index_connections_on_requester_id"

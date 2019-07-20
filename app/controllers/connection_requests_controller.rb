@@ -1,5 +1,6 @@
 class ConnectionRequestsController < ApplicationController
   before_action :set_connection_request, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token
 
   # GET /connection_requests
   # GET /connection_requests.json
@@ -42,10 +43,10 @@ class ConnectionRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @connection_request.update(connection_request_params)
-        format.html { redirect_to @connection_request, notice: 'Connection request was successfully updated.' }
-        format.json { render :show, status: :ok, location: @connection_request }
+        # format.html { redirect_to @connection_request, notice: 'Connection request was successfully updated.' }
+        format.json { render json: @connection_request, status: :ok }
       else
-        format.html { render :edit }
+        # format.html { render :edit }
         format.json { render json: @connection_request.errors, status: :unprocessable_entity }
       end
     end
@@ -56,8 +57,7 @@ class ConnectionRequestsController < ApplicationController
   def destroy
     @connection_request.destroy
     respond_to do |format|
-      format.html { redirect_to connection_requests_url, notice: 'Connection request was successfully destroyed.' }
-      format.json { head :no_content }
+      format.json { render json: @connection_request, status: :ok }
     end
   end
 
@@ -69,6 +69,6 @@ class ConnectionRequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def connection_request_params
-      params.require(:connection_request).permit(:requester_id, :requestee_id, :source)
+      params.require(:connection_request).permit(:requester_id, :requestee_id, :source_id, :source_type, :ignored, :accepted)
     end
 end

@@ -5,13 +5,26 @@
   <% else %>
     You've reached 
     <%= link_to "#{@connection_token.user.name}", profile_path(@connection_token.user.id) %>'s connection link.
+    <br>
+    <br>
+    <% if @existing_request %>
+      You've already requested a connection with this user!
+    <% elsif @incoming_request %>
+      This user has requested a connection with you.
 
-    <%= form_for(@connection_request, as: :connection_request, :url => '/connection_requests') do |form| %>
-      <%= form.hidden_field :requester_id, value: current_user.id %>
-      <%= form.hidden_field :requestee_id, value: @connection_token.user.id %>
-      <%= form.hidden_field :source_id, value: @connection_token.id %>
-      <%= form.hidden_field :source_type, value: "ConnectionToken" %>
-      <%= form.submit %>
+      <%= react_component("ConnectionToken", {
+        request: @incoming_request
+      }) %>
+    <% elsif @existing_connection %>
+      You are already connected with this user!
+    <% else %>
+      <%= form_for(@connection_request, as: :connection_request, :url => '/connection_requests') do |form| %>
+        <%= form.hidden_field :requester_id, value: current_user.id %>
+        <%= form.hidden_field :requestee_id, value: @connection_token.user.id %>
+        <%= form.hidden_field :source_id, value: @connection_token.id %>
+        <%= form.hidden_field :source_type, value: "ConnectionToken" %>
+        <%= form.submit "Request connection" %>
+      <% end %>
     <% end %>
   <% end %>
 

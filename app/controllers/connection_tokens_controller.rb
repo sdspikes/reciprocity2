@@ -11,8 +11,13 @@ class ConnectionTokensController < ApplicationController
   # GET /connection_tokens/1
   # GET /connection_tokens/1.json
   def show
-    @connection_token 
-    @connection_request = ConnectionToken.new
+    @connection_token
+    @existing_connection = Connection.find_by(requester_id: current_user.id, requestee_id: @connection_token.user_id) && Connection.find_by(requester_id: current_user.id, requestee_id: @connection_token.user_id)
+    @existing_request = ConnectionRequest.find_by(requester_id: current_user.id, requestee_id: @connection_token.user_id)
+    @incoming_request = ConnectionRequest.find_by(requestee_id: current_user.id, requester_id: @connection_token.user_id)
+
+    @connection_request = ConnectionRequest.new
+    @connection = Connection.new
   end
 
   # # GET /connection_tokens/new
