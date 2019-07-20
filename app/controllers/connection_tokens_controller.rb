@@ -1,5 +1,5 @@
 class ConnectionTokensController < ApplicationController
-  before_action :set_connection_token, only: [:show, :edit, :update, :destroy]
+  before_action :set_connection_token, only: [:show, :edit, :update, :update_expiration, :destroy]
   skip_before_action :verify_authenticity_token
 
   # GET /connection_tokens
@@ -48,16 +48,34 @@ class ConnectionTokensController < ApplicationController
     end
   end
 
+  def update_expiration
+    if (params[:activate] == true)
+      @connection_token.reactivate
+    else
+      @connection_token.deactivate
+    end
+    respond_to do |format|
+      if @connection_token.save
+        # TODO: this
+        @connection_token_json = @connection_token.as_json
+        @connection_token_json[:expired] = @connection_token.expired?
+        format.json { render json: @connection_token_json, status: :ok }
+      else
+        format.json { render json: @connection_token.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PATCH/PUT /connection_tokens/1
   # PATCH/PUT /connection_tokens/1.json
   def update
     respond_to do |format|
       if @connection_token.update(connection_token_params)
-        format.html { redirect_to @connection, notice: 'Connection was successfully updated.' }
-        format.json { render :show, status: :ok, location: @connection_token }
+        format.json { render json: @connection_token, status: :ok }
+        format.html { redirect_to @connection_token, notice: 'Connection token was successfully updated.' }
       else
+        format.json { render json: @connection_token.errors, status: :unprocessable_entity }
         format.html { render :edit }
-        format.json { render json: @connection.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -80,6 +98,6 @@ class ConnectionTokensController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def connection_token_params
-      params.require(:connection_token).permit(:token, :name)
+      params.require(:connection_token).permit(:token, :name, :expires_at, :activate)
     end
 end

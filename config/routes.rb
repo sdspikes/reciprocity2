@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   put "api/privacy_group_member/new", to: "privacy_group_members#create_member", as: "create_member", defaults: { format: 'json' }
   delete "api/privacy_group_member/delete", to: "privacy_group_members#destroy_member", as: "destroy_member"
 
+  put "api/connection_token_expiration/:id", to: "connection_tokens#update_expiration", as: "update_expiration", defaults: { format: 'json' }
 
   resources :connection_tokens
   # get "connection_token/:token", to: "connections#token", as: "connection_token_thing"

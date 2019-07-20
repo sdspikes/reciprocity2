@@ -11,9 +11,12 @@ class ConnectionToken < ApplicationRecord
     end
   end
 
+  def deactivate
+    self.expires_at = DateTime.now
+  end
+
   def reactivate
     self.expires_at = DateTime.now + 1
-    self.save
   end
 
   def expired?

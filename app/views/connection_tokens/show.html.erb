@@ -2,6 +2,8 @@
 
   <% if current_user == @connection_token.user %>
     This is your own link.  Copy it and post it or send it to specific people!
+  <% elsif @connection_token.expired? %>
+    This link has expired and is no longer valid.
   <% else %>
     You've reached 
     <%= link_to "#{@connection_token.user.name}", profile_path(@connection_token.user.id) %>'s connection link.

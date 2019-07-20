@@ -5,7 +5,11 @@ class ConnectionsController < ApplicationController
   # GET /connections
   # GET /connections.json
   def index
-    @connection_tokens = current_user.connection_tokens
+    original_connection_tokens = current_user.connection_tokens
+    @connection_tokens = original_connection_tokens.as_json.map.with_index do |token, i|
+      token[:expired] = original_connection_tokens[i].expired?
+      token
+    end
     @connection_people = current_user.connection_people
     @request_people = current_user.requesters
     @incoming_requests = current_user.incoming_connection_requests

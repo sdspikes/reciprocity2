@@ -97,6 +97,25 @@ class Connection extends React.Component {
       })
   }
 
+  setTokenExpiration(idx, token, activate) {
+    // Default options are marked with *
+    return fetch(`api/connection_token_expiration/${token}`, {
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ activate: activate }) // body data type must match "Content-Type" header
+    })
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        let { tokens } = this.state
+        tokens[idx] = json
+        this.setState({ tokens })
+      })
+  }
+
   ignoreRequest(idx, req) {
     // Default options are marked with *
     return fetch(`/connection_requests/${req.id}`, {
@@ -151,6 +170,10 @@ class Connection extends React.Component {
       })
   }
 
+  newDate() {
+    console.log("new date chosen")
+  }
+
   render() {
     const {
       tokens,
@@ -172,7 +195,6 @@ class Connection extends React.Component {
               <th>Ignore</th>
             </tr>
             {incoming_requests.map((req, idx) => {
-              console.log(req)
               return (
                 <tr key={idx}>
                   <td>
@@ -246,10 +268,15 @@ class Connection extends React.Component {
                       href={`/connection_tokens/${token.token}`}
                     >{`${token.name} Token Link`}</a>
                   </td>
-                  <td>{token.expires_at}</td>
+                  <td>{token.expires_at} </td>
+
                   <td>
-                    <button onClick={() => this.cancelToken(idx, token.token)}>
-                      deactivate
+                    <button
+                      onClick={() =>
+                        this.setTokenExpiration(idx, token.token, token.expired)
+                      }
+                    >
+                      {token.expired ? "reactivate" : "deactivate"}
                     </button>
                   </td>
                 </tr>
