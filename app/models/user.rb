@@ -92,6 +92,12 @@ class User < ApplicationRecord
     end
   end
 
+  def get_relevant_users()
+    # TODO(sdspikes): once there's a setting for who you're visible
+    # to, check all users to see if they want to be visible to you
+    self.connection_people
+  end
+
   # Gets the all other users sorted by relevence for a particular user.
   def self.get_relevant_users(user_id)
     # Order the other users by lexographically by three properties
