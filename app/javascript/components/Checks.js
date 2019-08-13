@@ -1,12 +1,35 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
+  dense: {
+    marginTop: 19,
+  },
+  menu: {
+    width: 200,
+  },
+});
 
 class Checks extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      usersToActivities: props.users_to_activities
+      usersToActivities: props.users_to_activities,
+      search: ""
     };
+
+    this.handleSearchChange = this.handleSearchChange.bind(this)
   }
 
   newCheck (userId, activityId) {
@@ -62,19 +85,40 @@ class Checks extends React.Component {
     this.updateCheck(currentStatus, userId, activityId, newCheckedness)
   }
 
+  handleSearchChange(event) {
+    this.setState({search: event.target.value})
+  }
+
+  filterBySearch = users => {
+    const terms = this.state.search.split(" ")
+    var remaining = [...users]
+    terms.forEach((term, i) => {
+      remaining = remaining.filter(user => (user.name.toLowerCase().search(term.toLowerCase()) != -1 || user.email.toLowerCase() == term.toLowerCase()))
+    })
+    return remaining
+  }
+
   render () {
-    const { activities, users } = this.props;
+    const { activities, users, classes } = this.props;
     const { usersToActivities } = this.state;
 
     return (
       <React.Fragment>
+        <TextField
+          id="search"
+          label="Filter by name or full email address"
+          type="search"
+          className={classes.textField}
+          margin="normal"
+          onChange={this.handleSearchChange}
+        />
         <table>
           <tbody>
             <tr>
               <th>name</th>
               {activities.map((x, idx) => <th key={idx}>{x.title}</th>)}
             </tr>
-            {users.map((user, idx) =>
+            {this.filterBySearch(users).map((user, idx) =>
               <tr key={idx}>
                 <td><a href={`/profiles/${user.id}`}>{user.name}</a></td>
                 {activities.map((activity, idx) => {
@@ -98,7 +142,11 @@ class Checks extends React.Component {
   }
 }
 
-export default Checks;
+Checks.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Checks);
 
 
 
