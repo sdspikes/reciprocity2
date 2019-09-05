@@ -19,6 +19,8 @@ Make sure to set up postgres roles and start your postgres server.
 
 You may need to run `brew services restart postgres` 
 
+To start the server on Windows, run `pg_ctl -D "C:\Program Files\PostgreSQL\11\data" start` (where `11` is the version of PostgreSQL)
+
 ### Bundle Install
 Now that you've got your version of ruby set up, in the root directory of the app, run 
 ```
