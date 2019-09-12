@@ -15,7 +15,8 @@ class PrivacyGroupsController < ApplicationController
     @members = @privacy_group.privacy_group_members
     ineligible_user_ids = @members.map(&:user_id) << @privacy_group.owner_id
     @member_users = @members.map{ |member| member.user }
-    @eligible_users = User.where.not(id: ineligible_user_ids)
+    @eligible_users = @current_user.get_relevant_users.select { |user| !ineligible_user_ids.include? user.id }
+    # @eligible_users = User.where.not(id: ineligible_user_ids)
     # @eligible_users = User.where.not(id: current_user.id)
   end
 
