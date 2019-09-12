@@ -23,6 +23,7 @@
           <% if user_signed_in? %>
             <li class="nav-item active nav-link"><%= link_to current_user[:name], profile_path(current_user.id) %></li>
             <li class="nav-item active nav-link"><%= link_to('Manage Privacy', privacy_groups_path) %></li>
+            <li class="nav-item active nav-link"><%= link_to('Connections', connections_path) %></li>
             <li class="nav-item active nav-link"><%= link_to('My Account', edit_user_registration_path) %></li>
             <li class="nav-item nav-link"><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
           <% else %>
